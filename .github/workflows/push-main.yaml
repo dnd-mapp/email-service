@@ -1,0 +1,38 @@
+name: Push to main
+on:
+    push:
+        branches:
+            - main
+permissions:
+    contents: read
+jobs:
+    ci:
+        name: Continuous Integration
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+            - name: ci
+              uses: ./.github/actions/ci
+
+    cd:
+        name: Continuous Delivery
+        needs:
+            - ci
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+            - name: Create Docker image
+              uses: ./.github/actions/docker-build
+              with:
+                  docker-username: ${{ secrets.DOCKER_USERNAME }}
+                  docker-password: ${{ secrets.DOCKER_PASSWORD }}
+                  tags: dev
+
+            - name: Update dev environment
+              shell: bash
+              run: |
+                  curl -i -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN_DEV }}" ${{ secrets.DEPLOY_END_POINT_DEV }}?image=dndmapp/auth-server:dev

@@ -1,0 +1,21 @@
+{
+    "$schema": "https://json.schemastore.org/nest-cli",
+    "collection": "@nestjs/schematics",
+    "compilerOptions": {
+        "builder": "webpack",
+        "plugins": [
+            {
+                "name": "@nestjs/swagger",
+                "options": {
+                    "introspectComments": true
+                }
+            }
+        ],
+        "tsConfigPath": "tsconfig.app.json",
+        "webpackConfigPath": "webpack.config.js"
+    },
+    "generateOptions": {
+        "baseDir": "app"
+    },
+    "sourceRoot": "src"
+}

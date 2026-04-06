@@ -1,0 +1,27 @@
+name: Continuous Integration
+description: Runs continuous integration checks
+runs:
+    using: composite
+    steps:
+        - name: Set up tools
+          uses: ./.github/actions/setup-tools
+
+        - name: Generate Prisma client
+          shell: bash
+          run: pnpm gen:prisma
+
+        - name: Check formatting
+          shell: bash
+          run: pnpm format:check
+
+        - name: Check linting
+          shell: bash
+          run: pnpm lint
+
+        - name: Compile app
+          shell: bash
+          run: pnpm build
+
+        - name: Run unit tests
+          shell: bash
+          run: pnpm test

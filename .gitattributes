@@ -1,0 +1,72 @@
+# ----------------------------------------------------------------
+# Global Settings
+# ----------------------------------------------------------------
+
+# Handle line endings automatically for files detected as text
+# and force LF (Unix-style) on check-in.
+*                   text=auto eol=lf
+
+# ----------------------------------------------------------------
+# JavaScript / TypeScript / Node.js
+# ----------------------------------------------------------------
+
+*.js                text
+*.mjs               text
+*.cjs               text
+*.ts                text
+*.mts               text
+*.cts               text
+*.json              text
+*.pnpm-lock.yaml    text -diff
+
+# Ensure lockfile is treated as a generated file in GitHub diffs
+pnpm-lock.yaml      linguist-generated
+
+# ----------------------------------------------------------------
+# Config & Tooling (Prettier, ESLint, Markdownlint)
+# ----------------------------------------------------------------
+
+*.yaml              text
+*.yml               text
+*.md                text
+.prettier           text
+.markdownlint*      text
+
+# ----------------------------------------------------------------
+# Docker
+# ----------------------------------------------------------------
+
+Dockerfile          text
+.dockerignore       text
+docker-compose.yml  text
+
+# ----------------------------------------------------------------
+# IDE / WebStorm (.run configurations)
+# ----------------------------------------------------------------
+
+# Ensure WebStorm run configurations are treated as XML text
+.run/*.xml          text
+
+# ----------------------------------------------------------------
+# Testing (Vitest)
+# ----------------------------------------------------------------
+
+*.spec.ts           text
+
+# ----------------------------------------------------------------
+# Shell Scripts
+# ----------------------------------------------------------------
+
+# Ensure shell scripts always use LF to prevent execution errors in Docker/Linux
+*.sh                text eol=lf
+
+# ----------------------------------------------------------------
+# Graphics & Binaries
+# ----------------------------------------------------------------
+
+*.png               binary
+*.jpg               binary
+*.jpeg              binary
+*.gif               binary
+*.ico               binary
+*.pdf               binary
