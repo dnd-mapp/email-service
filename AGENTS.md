@@ -1,6 +1,6 @@
 # AGENTS.md
 
-NestJS 11 + Fastify 5 OAuth2 IdP with PKCE for D&D Mapp. Uses **pnpm**.
+NestJS + Fastify email dispatching service for D&D Mapp. Uses **pnpm**.
 
 ## Claude Code
 
