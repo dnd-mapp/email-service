@@ -1,7 +1,7 @@
 opencollection: 1.0.0
 
 info:
-  name: dnd-mapp/auth-server
+  name: dnd-mapp/email-service
 config:
   proxy:
     inherit: true

@@ -24,7 +24,7 @@ RUN pnpm gen:prisma && \
 
 
 FROM node:24.14.0 AS packager
-     
+
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
@@ -32,7 +32,7 @@ RUN corepack enable
 
 WORKDIR /app
 
-COPY --from=builder /app/dist/auth-server .
+COPY --from=builder /app/dist/email-service .
 
 COPY .docker/healthcheck.mjs .docker/entrypoint.sh prisma.config.ts ./
 

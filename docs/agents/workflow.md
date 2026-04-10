@@ -45,7 +45,7 @@ pnpm build                    # Build with Webpack via NestJS CLI
 
 # Testing
 pnpm test                     # Run all tests (CI mode)
-pnpm test:development         # Watch mode with Vitest UI (http://localhost:51204/auth-server/)
+pnpm test:development         # Watch mode with Vitest UI (http://localhost:51204/email-service/)
 
 # Single test file
 pnpm exec vitest run src/path/to/file.spec.ts

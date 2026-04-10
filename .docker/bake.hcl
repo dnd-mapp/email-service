@@ -14,7 +14,7 @@ target "app" {
         "linux/amd64",
         "linux/arm64"
     ]
-    tags = [for tag in TAGS : "dndmapp/auth-server:${tag}"]
+    tags = [for tag in TAGS : "dndmapp/email-service:${tag}"]
 
     attest = [
         "type=sbom",
