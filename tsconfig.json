@@ -22,7 +22,7 @@
         "noUncheckedIndexedAccess": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "outDir": "./dist/auth-server",
+        "outDir": "./dist/email-service",
         "paths": {
             "@/app": ["src/app/index.ts"],
             "@/common": ["src/common/index.ts"],
