@@ -36,4 +36,4 @@ jobs:
             - name: Update dev environment
               shell: bash
               run: |
-                  curl -i -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN_DEV }}" ${{ secrets.DEPLOY_END_POINT_DEV }}?image=dndmapp/auth-server:dev
+                  curl -i -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN_DEV }}" ${{ secrets.DEPLOY_END_POINT_DEV }}?image=dndmapp/email-service:dev
