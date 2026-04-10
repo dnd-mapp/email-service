@@ -15,8 +15,6 @@
     "prisma:seed": "pnpm exec prisma db seed",
     "docker:build": "docker build -f .docker/Dockerfile -t dndmapp/email-service:latest .",
     "docker:bake": "docker buildx bake -f .docker/bake.hcl app",
-    "docker:compose:up": "docker compose -f .docker/compose.yaml up -d",
-    "docker:compose:down": "docker compose -f .docker/compose.yaml down",
     "test": "pnpm exec vitest run",
     "test:development": "pnpm exec vitest --ui --watch",
     "lint": "pnpm lint:eslint && pnpm lint:markdownlint",
@@ -27,8 +25,21 @@
   },
   "packageManager": "pnpm@10.33.0",
   "engines": {
-    "node": ">=24.14.0",
-    "pnpm": ">=10.33.0"
+    "node": "~24.14"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "~24.14",
+      "onFail": "error"
+    },
+    "packageManager": [
+      {
+        "name": "pnpm",
+        "version": "10.33.0",
+        "onFail": "error"
+      }
+    ]
   },
   "dependencies": {
     "@dnd-mapp/shared-utils": "~1.2",

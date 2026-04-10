@@ -1,104 +1,37 @@
-# 🛡️ D&D Mapp | Auth Server (Docker)
+# 🛡️ D&D Mapp | Email Service
 
-![Docker Pulls](https://img.shields.io/docker/pulls/dndmapp/auth-server)
-![Docker Image Size](https://img.shields.io/docker/image-size/dndmapp/auth-server/latest)
-![Node Version](https://img.shields.io/badge/Node-v24.14.0-339933?logo=node.js&logoColor=white)
+![Docker Pulls](https://img.shields.io/docker/pulls/dndmapp/email-service)
+![Docker Image Size](https://img.shields.io/docker/image-size/dndmapp/email-service/latest)
+![Node Version](https://img.shields.io/badge/Node-v24+-339933?logo=node.js&logoColor=white)
 ![Framework](https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-The **dndmapp/auth-server** is a high-performance, containerized Identity Provider (IdP) built on NestJS and Fastify. It serves as the core security engine for the **D&D Mapp** ecosystem, implementing modern authentication standards like **Authorization Code Flow with PKCE**. This image is engineered for security-first environments, featuring multi-stage builds, hardened Alpine runtimes, and full SBOM/Provenance attestations.
+The **dndmapp/email-service** is the centralized communication engine for the **D&D Mapp** ecosystem. It is a high-performance, containerized email dispatching service built on NestJS and Fastify, responsible for reliable notification delivery to players and Dungeon Masters. This image is engineered for security-first environments, featuring multi-stage builds, hardened Alpine runtimes, and full SBOM/Provenance attestations.
 
 ---
 
 ## 🚀 Quick Start
 
-Launch a standalone instance. This requires an existing MariaDB/MySQL instance.
+Launch a standalone instance. This requires an existing MariaDB/MySQL instance and access to a Gmail SMTP account.
 
 ```bash
 docker run -d \
-  --name auth-server \
-  -p 4350:4350 \
+  --name email-service \
+  -p 4450:4450 \
   -e NODE_ENV=production \
-  -e DB_URL="mysql://user:password@host:3306/auth_db" \
-  dndmapp/auth-server:latest
+  -e DB_URL="mysql://user:password@host:3306/email_db" \
+  -e EMAIL_SERVICE_SMTP_HOST="smtp.gmail.com" \
+  -e EMAIL_SERVICE_SMTP_USER="your-account@gmail.com" \
+  -e EMAIL_SERVICE_SMTP_PASSWORD="your-app-password" \
+  -e EMAIL_SERVICE_AUTH_SERVER_URL="https://your-auth-server" \
+  dndmapp/email-service:latest
 ```
 
 ---
 
 ## 🏗️ Full Stack Deployment
 
-For a complete environment including the database, migrations, and management tools, use the provided Docker Compose configuration.
-
-### 1. Configuration Setup
-
-Prepare your environment by creating the following files based on these examples:
-
-#### **Environment Variables (`.env`)**
-
-Create a `.env` file in your root directory. This configuration links the NestJS application to the MariaDB container.
-
-```text
-# CORS Configuration
-AUTH_SERVER_CORS_ORIGINS="https://localhost.www.dndmapp.dev:4200"
-
-# Database Configuration
-AUTH_SERVER_DB_HOST="mariadb-server"
-AUTH_SERVER_DB_PORT="3306"
-AUTH_SERVER_DB_USER="admin"
-AUTH_SERVER_DB_PASSWORD="password123"
-AUTH_SERVER_DB_SCHEMA="auth_db"
-
-PRISMA_DB_HOST="mariadb-server"
-PRISMA_DB_USER="prisma"
-PRISMA_DB_PASSWORD="prisma-password"
-
-# Connection String used by Prisma
-DB_URL="mysql://${PRISMA_DB_USER}:${PRISMA_DB_PASSWORD}@${PRISMA_DB_HOST}:${AUTH_SERVER_DB_PORT}/${AUTH_SERVER_DB_SCHEMA}"
-```
-
-#### **Database Initialization (`mariadb-init.sql`)**
-
-This script sets up the necessary users and databases during the first boot of the MariaDB container.
-
-```sql
--- 1. Create database users
-CREATE USER IF NOT EXISTS 'prisma'@'%' IDENTIFIED BY 'prisma-password';
-CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'password123';
-
--- 2. Create application database and grant privileges
-CREATE DATABASE IF NOT EXISTS `auth_db`
-    CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-GRANT ALL PRIVILEGES ON `auth_db`.* TO 'prisma'@'%';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `auth_db`.* TO 'admin'@'%';
-
--- 3. Create shadow database for Prisma migrations (Only required for non-production environments)
-CREATE DATABASE IF NOT EXISTS `auth_db_shadow`
-    CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-GRANT ALL PRIVILEGES ON `auth_db_shadow`.* TO 'prisma'@'%';
-
--- 4. Apply privileges
-FLUSH PRIVILEGES;
-```
-
-#### **Secrets**
-
-Create the root password file for MariaDB:
-
-```bash
-mkdir -p secrets/mariadb
-echo "your_root_password" > ./secrets/mariadb/root.txt
-```
-
-### 2. Orchestration Details
-
-The stack includes:
-
-- **auth-server:** The NestJS application.
-- **db-migration:** A short-lived container that runs `prisma migrate deploy` and `prisma db seed` before the server starts.
-- **mariadb-server:** The primary data store with health checks.
-- **dbeaver:** A web-based database management GUI (CloudBeaver) available on port `8978`.
+For a complete environment including the database, migrations, and management tools, refer to the [**dnd-mapp-stack**](https://github.com/dnd-mapp/dnd-mapp-stack) repository, which contains the official Docker Compose configuration for the entire D&D Mapp platform.
 
 ---
 
@@ -106,8 +39,8 @@ The stack includes:
 
 This image follows DevSecOps best practices to ensure a minimal attack surface and verifiable supply chain integrity.
 
-- **Base Image:** `node:24.14.0-alpine3.23` (Lightweight & security hardened).
-- **Exposed Ports:** `4350` (API/Docs).
+- **Base Image:** `node:24-alpine` (Lightweight & security hardened).
+- **Exposed Ports:** `4450` (API/Docs).
 - **Security Attestations:**
   - **SBOM:** Software Bill of Materials included.
   - **Provenance:** Build metadata (`mode=max`) for CI/CD transparency.
@@ -143,10 +76,10 @@ This image is built using **Docker Buildx** to support multi-arch deployments:
 
 ## 🔗 Project Links
 
-- **Source Code:** [github.com/dnd-mapp/auth-server](https://github.com/dnd-mapp/auth-server)
-- **Issue Tracker:** [Report a Bug](https://github.com/dnd-mapp/auth-server/issues)
+- **Source Code:** [github.com/dnd-mapp/email-service](https://github.com/dnd-mapp/email-service)
+- **Issue Tracker:** [Report a Bug](https://github.com/dnd-mapp/email-service/issues)
 - **Organization:** [D&D Mapp on GitHub](https://github.com/dnd-mapp)
 
 ---
 
-*“Critical hit on security. Roll for initiative!”*
+*"Critical hit on deliverability. Roll for initiative!"*
