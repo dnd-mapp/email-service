@@ -27,8 +27,21 @@
   },
   "packageManager": "pnpm@10.33.0",
   "engines": {
-    "node": ">=24.14.0",
-    "pnpm": ">=10.33.0"
+    "node": "~24.14"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "~24.14",
+      "onFail": "error"
+    },
+    "packageManager": [
+      {
+        "name": "pnpm",
+        "version": "10.33.0",
+        "onFail": "error"
+      }
+    ]
   },
   "dependencies": {
     "@dnd-mapp/shared-utils": "~1.2",
