@@ -52,7 +52,7 @@ jobs:
                   app-id: ${{ secrets.AUTH_APP_ID }}
                   private-key: ${{ secrets.AUTH_APP_PRIVATE_KEY }}
                   owner: dnd-mapp
-                  repositories: auth-server
+                  repositories: email-service
 
             - name: Get bot user info
               id: bot-user
