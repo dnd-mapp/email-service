@@ -15,8 +15,6 @@
     "prisma:seed": "pnpm exec prisma db seed",
     "docker:build": "docker build -f .docker/Dockerfile -t dndmapp/email-service:latest .",
     "docker:bake": "docker buildx bake -f .docker/bake.hcl app",
-    "docker:compose:up": "docker compose -f .docker/compose.yaml up -d",
-    "docker:compose:down": "docker compose -f .docker/compose.yaml down",
     "test": "pnpm exec vitest run",
     "test:development": "pnpm exec vitest --ui --watch",
     "lint": "pnpm lint:eslint && pnpm lint:markdownlint",
