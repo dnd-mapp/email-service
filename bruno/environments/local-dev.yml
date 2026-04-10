@@ -1,4 +1,4 @@
 name: local-dev
 variables:
   - name: SERVER_URL
-    value: https://localhost.email.dndmapp.dev:4350
+    value: https://localhost.email.dndmapp.dev:4450
