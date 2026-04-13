@@ -1,6 +1,6 @@
 import { parseArrayFromString } from '@/shared-utils';
 import { Transform } from 'class-transformer';
-import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { ArrayMinSize, IsArray, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import {
     DEFAULT_CORS_ORIGINS,
     DEFAULT_DB_HOST,
@@ -15,16 +15,18 @@ import {
 import { IsHost } from './is-host.decorator';
 
 export const EnvironmentVariableNames = {
-    SERVER_HOST: 'AUTH_SERVER_HOST',
-    SERVER_PORT: 'AUTH_SERVER_PORT',
-    CORS_ORIGINS: 'AUTH_SERVER_CORS_ORIGINS',
-    SSL_CERT_PATH: 'AUTH_SERVER_SSL_CERT_PATH',
-    SSL_KEY_PATH: 'AUTH_SERVER_SSL_KEY_PATH',
-    DB_HOST: 'AUTH_SERVER_DB_HOST',
-    DB_PORT: 'AUTH_SERVER_DB_PORT',
-    DB_SCHEMA: 'AUTH_SERVER_DB_SCHEMA',
-    DB_USER: 'AUTH_SERVER_DB_USER',
-    DB_PASSWORD: 'AUTH_SERVER_DB_PASSWORD',
+    SERVER_HOST: 'EMAIL_SERVICE_HOST',
+    SERVER_PORT: 'EMAIL_SERVICE_PORT',
+    CORS_ORIGINS: 'EMAIL_SERVICE_CORS_ORIGINS',
+    SSL_CERT_PATH: 'EMAIL_SERVICE_SSL_CERT_PATH',
+    SSL_KEY_PATH: 'EMAIL_SERVICE_SSL_KEY_PATH',
+    DB_HOST: 'EMAIL_SERVICE_DB_HOST',
+    DB_PORT: 'EMAIL_SERVICE_DB_PORT',
+    DB_SCHEMA: 'EMAIL_SERVICE_DB_SCHEMA',
+    DB_USER: 'EMAIL_SERVICE_DB_USER',
+    DB_PASSWORD: 'EMAIL_SERVICE_DB_PASSWORD',
+    RESEND_API_KEY: 'RESEND_API_KEY',
+    RESEND_FROM: 'RESEND_FROM',
 } as const;
 
 export class EnvironmentVariablesSchema {
@@ -79,4 +81,13 @@ export class EnvironmentVariablesSchema {
     @IsNotEmpty()
     @IsString()
     public [EnvironmentVariableNames.DB_PASSWORD]!: string;
+
+    @IsNotEmpty()
+    @IsString()
+    public [EnvironmentVariableNames.RESEND_API_KEY]!: string;
+
+    @IsEmail()
+    @IsNotEmpty()
+    @IsString()
+    public [EnvironmentVariableNames.RESEND_FROM]!: string;
 }
