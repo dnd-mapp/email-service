@@ -3,8 +3,6 @@ import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const description = `
-# D&D Mapp | Email Service API
-
 The **Email Service** is a high-performance centralized communication engine within the **D&D Mapp** microservices ecosystem. Built with **NestJS** and the **Fastify** adapter, it provides a unified RESTful gateway for outbound communications, ensuring reliable notification delivery for players and Dungeon Masters.
 
 ## 🚀 Overview

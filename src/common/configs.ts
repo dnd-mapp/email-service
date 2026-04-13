@@ -1,7 +1,7 @@
 export const ConfigurationNamespaces = {
     SERVER: 'server',
     DATABASE: 'database',
-    SECURITY: 'security',
+    RESEND: 'resend',
 } as const;
 
 interface CorsConfig {
@@ -28,12 +28,13 @@ export interface DatabaseConfig {
     password: string;
 }
 
-export interface SecurityConfig {
-    passwordPepper: string;
+export interface ResendConfig {
+    apiKey: string;
+    from: string;
 }
 
 export interface AppConfig {
     [ConfigurationNamespaces.SERVER]: ServerConfig;
     [ConfigurationNamespaces.DATABASE]: DatabaseConfig;
-    [ConfigurationNamespaces.SECURITY]: SecurityConfig;
+    [ConfigurationNamespaces.RESEND]: ResendConfig;
 }
