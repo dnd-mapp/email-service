@@ -3,7 +3,7 @@ import { defineConfig } from 'prisma/config';
 
 config({ path: '.env', quiet: true, ignore: ['MISSING_ENV_FILE'] });
 
-const dbUrl = process.env['DB_URL'];
+const dbUrl = process.env['EMAIL_SERVICE_DB_URL'];
 
 export default defineConfig({
     schema: 'prisma/schema.prisma',
