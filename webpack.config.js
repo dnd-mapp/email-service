@@ -3,6 +3,7 @@ const { readFileSync } = require('fs');
 const nodeExternals = require('webpack-node-externals');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isProduction = process.env['NODE_ENV'] === 'production';
 
@@ -16,7 +17,7 @@ function webpackConfig(options) {
 
     delete parsedManifest.dependencies;
     delete parsedManifest.devDependencies;
-    delete parsedManifest.engines;
+    delete parsedManifest.devEngines;
     delete parsedManifest.scripts;
     delete parsedManifest.packageManager;
 
@@ -51,6 +52,14 @@ function webpackConfig(options) {
             path: resolve(__dirname, 'dist/email-service'),
         },
         plugins: [
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: 'src/assets/email-templates/*.hbs',
+                        to: 'assets/email-templates/[name][ext]',
+                    },
+                ],
+            }),
             ...(isProduction
                 ? [
                       new GeneratePackageJsonPlugin(parsedManifest, {
