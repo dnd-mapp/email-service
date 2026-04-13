@@ -12,3 +12,13 @@ generator client {
 datasource db {
     provider = "mysql"
 }
+
+model EmailLog {
+    id           String   @id @default(cuid())
+    to           String
+    status       String
+    errorMessage String?  @map("error_message")
+    sentAt       DateTime @default(now()) @map("sent_at")
+
+    @@map("email_log")
+}
