@@ -1,0 +1,21 @@
+info:
+  name: send-email
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{SERVER_URL}}/email"
+  body:
+    type: json
+    data: |
+      {
+        "to": "oscar.wellner@gmail.com"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
