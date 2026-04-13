@@ -2,7 +2,7 @@ import { DatabaseService } from '@/database';
 import { PrismaClient } from '@/prisma/client';
 import { tryCatch } from '@dnd-mapp/shared-utils';
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { type EmailLogStatus } from './email-log-statuses';
+import { type EmailLogStatus } from './email-log-statuses.enum';
 
 @Injectable()
 export class EmailRepository {

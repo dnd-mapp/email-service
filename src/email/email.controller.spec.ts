@@ -1,11 +1,13 @@
 import { DatabaseModule } from '@/database';
-import { MockConfigService, MockPrisma, MockResendService } from '@/test';
+import { MockConfigService, MockPrisma, MockResendService, MockTemplateService } from '@/test';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
+import { EmailTemplates } from './email-template.enum';
 import { EmailController } from './email.controller';
 import { EmailModule } from './email.module';
 import { EmailService } from './services/email.service';
 import { ResendService } from './services/resend.service';
+import { TemplateService } from './services/template.service';
 
 describe('EmailController', () => {
     async function setupTest() {
@@ -16,6 +18,8 @@ describe('EmailController', () => {
             .useFactory({ factory: () => new MockConfigService() })
             .overrideProvider(ResendService)
             .useValue(new MockResendService())
+            .overrideProvider(TemplateService)
+            .useValue(new MockTemplateService())
             .compile();
 
         module.useLogger(false);
@@ -27,12 +31,16 @@ describe('EmailController', () => {
         };
     }
 
-    it('should call emailService.sendEmail with the recipient address', async () => {
+    it('should call emailService.sendEmail with the recipient address, template, and variables', async () => {
         const { controller, service } = await setupTest();
         const spy = vi.spyOn(service, 'sendEmail').mockResolvedValue();
 
-        await controller.sendEmail({ to: 'user@example.com' });
+        await controller.sendEmail({
+            to: 'user@example.com',
+            template: EmailTemplates.WELCOME,
+            variables: { userName: 'Alice' },
+        });
 
-        expect(spy).toHaveBeenCalledWith('user@example.com');
+        expect(spy).toHaveBeenCalledWith('user@example.com', EmailTemplates.WELCOME, { userName: 'Alice' });
     });
 });

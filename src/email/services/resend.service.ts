@@ -23,14 +23,14 @@ export class ResendService implements OnModuleInit {
         this.from = from;
     }
 
-    public async send(to: string, subject: string, text: string) {
+    public async send(to: string, subject: string, html: string) {
         this.logger.debug(`Dispatching email to "${to}" via Resend`);
 
         const { error } = await this.client.emails.send({
             from: `D&D Mapp <${this.from}>`,
             to: to,
             subject: subject,
-            text: text,
+            html: html,
         });
 
         if (error) {
