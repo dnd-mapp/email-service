@@ -10,7 +10,11 @@ http:
     type: json
     data: |
       {
-        "to": "oscar.wellner@gmail.com"
+        "to": "oscar.wellner@gmail.com",
+        "template": "welcome",
+        "variables": {
+          "username": "NoNamer777"
+        }
       }
   auth: inherit
 
