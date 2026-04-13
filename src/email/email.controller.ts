@@ -19,6 +19,6 @@ export class EmailController {
     @HttpCode(HttpStatus.ACCEPTED)
     @Post()
     public async sendEmail(@Body() dto: SendEmailDto) {
-        await this.emailService.sendEmail(dto.to);
+        await this.emailService.sendEmail(dto.to, dto.template, dto.variables ?? {});
     }
 }

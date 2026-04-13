@@ -1,7 +1,7 @@
 import { DatabaseService } from '@/database';
 import { InternalServerErrorException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { EmailLogStatuses } from './email-log-statuses';
+import { EmailLogStatuses } from './email-log-statuses.enum';
 import { EmailRepository } from './email.repository';
 
 describe('EmailRepository', () => {
