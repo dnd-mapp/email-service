@@ -1,24 +1,25 @@
-import { AppConfig } from '@/common';
+import { AppConfig, DatabaseConfig, ResendConfig, ServerConfig } from '@/common';
 
-export const defaultMockConfig: AppConfig = {
-    server: {
-        host: 'localhost',
-        port: 4350,
-        cors: {
-            origins: ['http://localhost:4200'],
-        },
-        ssl: {},
+export const defaultMockServerConfig: ServerConfig = {
+    host: 'localhost',
+    port: 4350,
+    cors: {
+        origins: ['http://localhost:4200'],
     },
-    database: {
-        host: 'localhost',
-        port: 3306,
-        schema: 'dma_auth',
-        user: 'dma',
-        password: 'password',
-    },
-    security: {
-        passwordPepper: 'test-pepper',
-    },
+    ssl: {},
+};
+
+export const defaultMockDatabaseConfig: DatabaseConfig = {
+    host: 'localhost',
+    port: 3306,
+    schema: 'dma_auth',
+    user: 'dma',
+    password: 'password',
+};
+
+export const defaultMockResendConfig: ResendConfig = {
+    apiKey: 're_test_key',
+    from: 'test@example.com',
 };
 
 export class MockConfigService {
@@ -27,16 +28,16 @@ export class MockConfigService {
     constructor(config?: Partial<AppConfig>) {
         this.config = {
             server: {
-                ...defaultMockConfig.server,
+                ...defaultMockServerConfig,
                 ...config?.server,
             },
             database: {
-                ...defaultMockConfig.database,
+                ...defaultMockDatabaseConfig,
                 ...config?.database,
             },
-            security: {
-                ...defaultMockConfig.security,
-                ...config?.security,
+            resend: {
+                ...defaultMockResendConfig,
+                ...config?.resend,
             },
         };
     }
