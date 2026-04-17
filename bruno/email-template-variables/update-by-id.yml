@@ -1,0 +1,28 @@
+info:
+  name: update-by-id
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{SERVER_URL}}/email-templates/:templateId/variables/:variableId"
+  params:
+    - name: templateId
+      value: 4PfN3529W6OScJhGa62H1
+      type: path
+    - name: variableId
+      value: ""
+      type: path
+  body:
+    type: json
+    data: |
+      {
+        "name": "username"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

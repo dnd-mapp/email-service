@@ -5,16 +5,16 @@ info:
 
 http:
   method: PATCH
-  url: "{{SERVER_URL}}/email-templates/:templateId"
+  url: "{{SERVER_URL}}/sender-emails/:senderEmailId"
   params:
-    - name: templateId
-      value: XgiBqO2WYAg2zbSvkjEJz
+    - name: senderEmailId
+      value: -VOEY4eDVjDiO9QwoKFEc
       type: path
   body:
     type: json
     data: |
       {
-        "senderId": "-VOEY4eDVjDiO9QwoKFEc"
+        "name": "D&D Mapp Security"
       }
   auth: inherit
 

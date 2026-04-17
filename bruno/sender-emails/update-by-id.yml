@@ -1,15 +1,22 @@
 info:
-  name: get-by-id
+  name: update-by-id
   type: http
-  seq: 3
+  seq: 4
 
 http:
-  method: GET
+  method: PUT
   url: "{{SERVER_URL}}/sender-emails/:senderEmailId"
   params:
     - name: senderEmailId
       value: -VOEY4eDVjDiO9QwoKFEc
       type: path
+  body:
+    type: json
+    data: |
+      {
+        "name": "D&D Mapp Security",
+        "email": "security@dndmapp.nl.eu.org"
+      }
   auth: inherit
 
 settings:
