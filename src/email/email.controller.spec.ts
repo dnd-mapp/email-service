@@ -1,12 +1,10 @@
 import { DatabaseModule } from '@/database';
-import { MockConfigService, MockPrisma, MockResendService, MockTemplateService } from '@/test';
+import { MockConfigService, MockPrisma, MockResendService } from '@/test';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { EmailController } from './email.controller';
 import { EmailModule } from './email.module';
-import { EmailService } from './services/email.service';
 import { ResendService } from './services/resend.service';
-import { TemplateService } from './services/template.service';
 
 describe('EmailController', () => {
     async function setupTest() {
@@ -17,8 +15,6 @@ describe('EmailController', () => {
             .useFactory({ factory: () => new MockConfigService() })
             .overrideProvider(ResendService)
             .useValue(new MockResendService())
-            .overrideProvider(TemplateService)
-            .useValue(new MockTemplateService())
             .compile();
 
         module.useLogger(false);
@@ -26,20 +22,24 @@ describe('EmailController', () => {
 
         return {
             controller: module.get(EmailController),
-            service: module.get(EmailService),
+            resendService: module.get<MockResendService>(ResendService),
         };
     }
 
-    it('should call emailService.sendEmail with the recipient address, templateName, and variables', async () => {
-        const { controller, service } = await setupTest();
-        const spy = vi.spyOn(service, 'sendEmail').mockResolvedValue();
+    it('should send an email using the template and variables', async () => {
+        const { controller, resendService } = await setupTest();
 
         await controller.sendEmail({
             to: 'user@example.com',
             templateName: 'welcome',
-            variables: { userName: 'Alice' },
+            variables: { username: 'Alice' },
         });
 
-        expect(spy).toHaveBeenCalledWith('user@example.com', 'welcome', { userName: 'Alice' });
+        expect(resendService.send).toHaveBeenCalledWith(
+            'user@example.com',
+            'Welcome to D&D Mapp',
+            '<p>Hello Alice</p>',
+            expect.objectContaining({ email: 'info@dndmapp.nl.eu.org' })
+        );
     });
 });

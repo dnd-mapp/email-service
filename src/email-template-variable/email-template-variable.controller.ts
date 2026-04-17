@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
+import { ApiCreatedResponse, ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
 import { type FastifyReply } from 'fastify';
 import { CreateEmailTemplateVariableDto, UpdateEmailTemplateVariableDto } from './dtos';
 import { EmailTemplateVariableService } from './services';
 
+@ApiTags('email-template-variables')
 @Controller('/email-templates/:templateId/variables')
 export class EmailTemplateVariableController {
     private readonly emailTemplateVariableService: EmailTemplateVariableService;
@@ -13,6 +15,8 @@ export class EmailTemplateVariableController {
 
     /**
      * List all variables for an email template.
+     *
+     * @param templateId - The ID of the email template.
      */
     @Get()
     public async findAll(@Param('templateId') templateId: string) {
@@ -21,7 +25,10 @@ export class EmailTemplateVariableController {
 
     /**
      * Create a new variable for an email template.
+     *
+     * @param templateId - The ID of the email template.
      */
+    @ApiCreatedResponse({ description: 'Template variable created.' })
     @HttpCode(HttpStatus.CREATED)
     @Post()
     public async create(
@@ -38,6 +45,8 @@ export class EmailTemplateVariableController {
 
     /**
      * Get an email template variable by its ID.
+     *
+     * @param variableId - The ID of the template variable.
      */
     @Get('/:variableId')
     public async findById(@Param('variableId') variableId: string) {
@@ -46,6 +55,9 @@ export class EmailTemplateVariableController {
 
     /**
      * Update a variable.
+     *
+     * @param templateId - The ID of the email template.
+     * @param variableId - The ID of the template variable.
      */
     @Put('/:variableId')
     public async update(
@@ -58,6 +70,9 @@ export class EmailTemplateVariableController {
 
     /**
      * Partially update a variable.
+     *
+     * @param templateId - The ID of the email template.
+     * @param variableId - The ID of the template variable.
      */
     @Patch('/:variableId')
     public async patch(
@@ -70,7 +85,10 @@ export class EmailTemplateVariableController {
 
     /**
      * Delete a variable.
+     *
+     * @param variableId - The ID of the template variable.
      */
+    @ApiNoContentResponse({ description: 'Template variable deleted.' })
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete('/:variableId')
     public async delete(@Param('variableId') variableId: string) {

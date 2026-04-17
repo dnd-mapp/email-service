@@ -1,19 +1,22 @@
 info:
-  name: partial-update-by-id
+  name: update-by-id
   type: http
-  seq: 5
+  seq: 4
 
 http:
-  method: PATCH
+  method: PUT
   url: "{{SERVER_URL}}/email-templates/:templateId"
   params:
     - name: templateId
-      value: XgiBqO2WYAg2zbSvkjEJz
+      value: 4PfN3529W6OScJhGa62H1
       type: path
   body:
     type: json
     data: |
       {
+        "name": "request-change-password",
+        "subject": "Reset your password",
+        "content": "<p>Hello {{username}}, click <a href=\"{{resetLink}}\">here</a> to reset your password.</p>",
         "senderId": "-VOEY4eDVjDiO9QwoKFEc"
       }
   auth: inherit

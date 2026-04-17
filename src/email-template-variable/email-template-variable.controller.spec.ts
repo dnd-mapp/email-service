@@ -1,78 +1,90 @@
+import { DatabaseService } from '@/database';
+import { MockPrisma, createTestModule } from '@/test';
 import { NotFoundException } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { EmailTemplateVariable } from './domain/email-template-variable.model';
+import { FastifyReply } from 'fastify';
+import { SEED_EMAIL_TEMPLATE_ID } from '../email-template/test';
+import { CreateEmailTemplateVariableDto, UpdateEmailTemplateVariableDto } from './dtos';
 import { EmailTemplateVariableController } from './email-template-variable.controller';
-import { EmailTemplateVariableService } from './services';
+import { EmailTemplateVariableModule } from './email-template-variable.module';
+import { SEED_EMAIL_TEMPLATE_VARIABLE_ID } from './test';
 
 describe('EmailTemplateVariableController', () => {
-    const now = new Date();
-
-    const mockVariable: EmailTemplateVariable = {
-        id: 'var-1',
-        name: 'username',
-        templateId: 'tpl-1',
-        createdAt: now,
-        updatedAt: now,
-    };
-
-    const mockService = {
-        findAllByTemplateId: vi.fn().mockResolvedValue([mockVariable]),
-        findById: vi.fn().mockResolvedValue(mockVariable),
-        create: vi.fn().mockResolvedValue(mockVariable),
-        update: vi.fn().mockResolvedValue(mockVariable),
-        delete: vi.fn().mockResolvedValue(undefined),
-    };
-
     async function setupTest() {
-        const module = await Test.createTestingModule({
-            controllers: [EmailTemplateVariableController],
-            providers: [{ provide: EmailTemplateVariableService, useValue: mockService }],
-        }).compile();
+        const module = await createTestModule(EmailTemplateVariableModule);
+        const databaseService = module.get<DatabaseService<MockPrisma>>(DatabaseService);
 
-        module.useLogger(false);
-        await module.init();
-
-        return { controller: module.get(EmailTemplateVariableController) };
+        return {
+            controller: module.get(EmailTemplateVariableController),
+            emailTemplateVariableDb: databaseService.prisma.emailTemplateVariableDb,
+        };
     }
 
-    beforeEach(() => {
-        mockService.findAllByTemplateId.mockResolvedValue([mockVariable]);
-        mockService.findById.mockResolvedValue(mockVariable);
-        mockService.create.mockResolvedValue(mockVariable);
-        mockService.update.mockResolvedValue(mockVariable);
-        mockService.delete.mockResolvedValue(undefined);
-    });
-
-    it('should call findAllByTemplateId with the templateId', async () => {
+    it('should return all variables for a template', async () => {
         const { controller } = await setupTest();
 
-        const result = await controller.findAll('tpl-1');
+        const result = await controller.findAll(SEED_EMAIL_TEMPLATE_ID);
 
-        expect(mockService.findAllByTemplateId).toHaveBeenCalledWith('tpl-1');
-        expect(result).toEqual([mockVariable]);
+        expect(result).toHaveLength(1);
+        expect(result[0]?.id).toBe(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
     });
 
-    it('should call findById with the variable id', async () => {
-        const { controller } = await setupTest();
+    it('should create a variable and set the Location header', async () => {
+        const { controller, emailTemplateVariableDb } = await setupTest();
+        const headerMock = vi.fn();
+        const mockRes = { header: headerMock } as unknown as FastifyReply;
+        const dto = { name: 'newVar' } as CreateEmailTemplateVariableDto;
 
-        const result = await controller.findById('var-1');
+        const result = await controller.create(SEED_EMAIL_TEMPLATE_ID, dto, mockRes);
 
-        expect(mockService.findById).toHaveBeenCalledWith('var-1');
-        expect(result).toEqual(mockVariable);
+        expect(result.name).toBe('newVar');
+        expect(headerMock).toHaveBeenCalledWith(
+            'Location',
+            `/email-templates/${SEED_EMAIL_TEMPLATE_ID}/variables/${result.id}`
+        );
+        expect(emailTemplateVariableDb.getAll()).toHaveLength(2);
     });
 
-    it('should call delete with the variable id', async () => {
+    it('should return a variable by id', async () => {
         const { controller } = await setupTest();
 
-        await controller.delete('var-1');
+        const result = await controller.findById(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
 
-        expect(mockService.delete).toHaveBeenCalledWith('var-1');
+        expect(result.id).toBe(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
     });
 
-    it('should throw NotFoundException when template does not exist', async () => {
+    it('should update a variable', async () => {
         const { controller } = await setupTest();
-        mockService.findAllByTemplateId.mockRejectedValueOnce(new NotFoundException('not found'));
 
-        await expect(controller.findAll('ghost')).rejects.toThrow(NotFoundException);
+        const result = await controller.update(SEED_EMAIL_TEMPLATE_ID, SEED_EMAIL_TEMPLATE_VARIABLE_ID, {
+            name: 'updatedVar',
+        } as UpdateEmailTemplateVariableDto);
+
+        expect(result.id).toBe(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
+        expect(result.name).toBe('updatedVar');
+    });
+
+    it('should partially update a variable', async () => {
+        const { controller } = await setupTest();
+
+        const result = await controller.patch(SEED_EMAIL_TEMPLATE_ID, SEED_EMAIL_TEMPLATE_VARIABLE_ID, {
+            name: 'patchedVar',
+        } as UpdateEmailTemplateVariableDto);
+
+        expect(result.id).toBe(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
+        expect(result.name).toBe('patchedVar');
+    });
+
+    it('should delete a variable', async () => {
+        const { controller, emailTemplateVariableDb } = await setupTest();
+
+        await controller.delete(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
+
+        expect(emailTemplateVariableDb.getById(SEED_EMAIL_TEMPLATE_VARIABLE_ID)).toBeNull();
+    });
+
+    it('should throw NotFoundException when the template does not exist', async () => {
+        const { controller } = await setupTest();
+
+        await expect(controller.findAll('unknown')).rejects.toThrow(NotFoundException);
     });
 });

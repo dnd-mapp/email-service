@@ -1,0 +1,24 @@
+info:
+  name: create
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{SERVER_URL}}/email-templates"
+  body:
+    type: json
+    data: |
+      {
+        "name": "request-change-password",
+        "subject": "Reset your password",
+        "content": "<p>Hello {{username}}, click <a href=\"{{resetLink}}\">here</a> to reset your password.</p>",
+        "senderId": "-VOEY4eDVjDiO9QwoKFEc"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

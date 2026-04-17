@@ -5,16 +5,19 @@ info:
 
 http:
   method: PATCH
-  url: "{{SERVER_URL}}/email-templates/:templateId"
+  url: "{{SERVER_URL}}/email-templates/:templateId/variables/:variableId"
   params:
     - name: templateId
-      value: XgiBqO2WYAg2zbSvkjEJz
+      value: 4PfN3529W6OScJhGa62H1
+      type: path
+    - name: variableId
+      value: ""
       type: path
   body:
     type: json
     data: |
       {
-        "senderId": "-VOEY4eDVjDiO9QwoKFEc"
+        "name": "username"
       }
   auth: inherit
 

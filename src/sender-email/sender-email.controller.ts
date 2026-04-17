@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
+import { ApiCreatedResponse, ApiNoContentResponse } from '@nestjs/swagger';
 import { type FastifyReply } from 'fastify';
 import { CreateSenderEmailDto, SenderEmailDto, UpdateSenderEmailDto } from './dtos';
 import { SenderEmailService } from './services';
@@ -22,6 +23,7 @@ export class SenderEmailController {
     /**
      * Create a new sender email address.
      */
+    @ApiCreatedResponse({ description: 'Sender email address created.' })
     @HttpCode(HttpStatus.CREATED)
     @Post()
     public async create(@Body() dto: CreateSenderEmailDto, @Res({ passthrough: true }) res: FastifyReply) {
@@ -34,37 +36,46 @@ export class SenderEmailController {
 
     /**
      * Get a sender email address by its ID.
+     *
+     * @param senderEmailId - The ID of the sender email address.
      */
     @Get('/:senderEmailId')
-    public async findById(@Param('senderEmailId') id: string) {
-        return this.senderEmailService.findById(id);
+    public async findById(@Param('senderEmailId') senderEmailId: string) {
+        return this.senderEmailService.findById(senderEmailId);
     }
 
     /**
      * Update a sender email address.
+     *
+     * @param senderEmailId - The ID of the sender email address.
      */
     @Put('/:senderEmailId')
     public async update(
-        @Param('senderEmailId') id: string,
+        @Param('senderEmailId') senderEmailId: string,
         @Body() dto: UpdateSenderEmailDto
     ): Promise<SenderEmailDto> {
-        return this.senderEmailService.update(id, dto);
+        return this.senderEmailService.update(senderEmailId, dto);
     }
 
     /**
      * Partially update a sender email address.
+     *
+     * @param senderEmailId - The ID of the sender email address.
      */
     @Patch('/:senderEmailId')
-    public async patch(@Param('senderEmailId') id: string, @Body() dto: UpdateSenderEmailDto) {
-        return this.senderEmailService.update(id, dto);
+    public async patch(@Param('senderEmailId') senderEmailId: string, @Body() dto: UpdateSenderEmailDto) {
+        return this.senderEmailService.update(senderEmailId, dto);
     }
 
     /**
      * Delete a sender email address.
+     *
+     * @param senderEmailId - The ID of the sender email address.
      */
+    @ApiNoContentResponse({ description: 'Sender email address deleted.' })
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete('/:senderEmailId')
-    public async delete(@Param('senderEmailId') id: string) {
-        await this.senderEmailService.delete(id);
+    public async delete(@Param('senderEmailId') senderEmailId: string) {
+        await this.senderEmailService.delete(senderEmailId);
     }
 }

@@ -5,10 +5,13 @@ info:
 
 http:
   method: GET
-  url: "{{SERVER_URL}}/email-templates/:templateId"
+  url: "{{SERVER_URL}}/email-templates/:templateId/variables/:variableId"
   params:
     - name: templateId
       value: 4PfN3529W6OScJhGa62H1
+      type: path
+    - name: variableId
+      value: ""
       type: path
   auth: inherit
 

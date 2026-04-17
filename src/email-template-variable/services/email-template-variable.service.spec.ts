@@ -1,66 +1,35 @@
+import { DatabaseService } from '@/database';
+import { MockPrisma, createTestModule } from '@/test';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { EmailTemplateVariable } from '../domain/email-template-variable.model';
-import { EmailTemplateVariableRepository } from '../email-template-variable.repository';
+import { SEED_EMAIL_TEMPLATE_ID } from '../../email-template/test';
+import { EmailTemplateVariableModule } from '../email-template-variable.module';
+import { SEED_EMAIL_TEMPLATE_VARIABLE_ID } from '../test';
 import { EmailTemplateVariableService } from './email-template-variable.service';
 
 describe('EmailTemplateVariableService', () => {
-    const now = new Date();
-
-    const mockVariable: EmailTemplateVariable = {
-        id: 'var-1',
-        name: 'username',
-        templateId: 'tpl-1',
-        createdAt: now,
-        updatedAt: now,
-    };
-
-    const mockRepository = {
-        findAllByTemplateId: vi.fn().mockResolvedValue([mockVariable]),
-        findById: vi.fn().mockResolvedValue(mockVariable),
-        findByNameAndTemplateId: vi.fn().mockResolvedValue(null),
-        templateExists: vi.fn().mockResolvedValue(true),
-        create: vi.fn().mockResolvedValue(mockVariable),
-        update: vi.fn().mockResolvedValue(mockVariable),
-        deleteById: vi.fn().mockResolvedValue(undefined),
-    };
-
     async function setupTest() {
-        const module = await Test.createTestingModule({
-            providers: [
-                EmailTemplateVariableService,
-                { provide: EmailTemplateVariableRepository, useValue: mockRepository },
-            ],
-        }).compile();
+        const module = await createTestModule(EmailTemplateVariableModule);
+        const databaseService = module.get<DatabaseService<MockPrisma>>(DatabaseService);
 
-        module.useLogger(false);
-        await module.init();
-
-        return { service: module.get(EmailTemplateVariableService) };
+        return {
+            service: module.get(EmailTemplateVariableService),
+            emailTemplateDb: databaseService.prisma.emailTemplateDb,
+            emailTemplateVariableDb: databaseService.prisma.emailTemplateVariableDb,
+        };
     }
-
-    beforeEach(() => {
-        mockRepository.findAllByTemplateId.mockResolvedValue([mockVariable]);
-        mockRepository.findById.mockResolvedValue(mockVariable);
-        mockRepository.findByNameAndTemplateId.mockResolvedValue(null);
-        mockRepository.templateExists.mockResolvedValue(true);
-        mockRepository.create.mockResolvedValue(mockVariable);
-        mockRepository.update.mockResolvedValue(mockVariable);
-        mockRepository.deleteById.mockResolvedValue(undefined);
-    });
 
     describe('findAllByTemplateId()', () => {
         it('should return all variables for an existing template', async () => {
             const { service } = await setupTest();
 
-            const result = await service.findAllByTemplateId('tpl-1');
+            const result = await service.findAllByTemplateId(SEED_EMAIL_TEMPLATE_ID);
 
-            expect(result).toEqual([mockVariable]);
+            expect(result).toHaveLength(1);
+            expect(result[0]?.templateId).toBe(SEED_EMAIL_TEMPLATE_ID);
         });
 
         it('should throw NotFoundException when template does not exist', async () => {
             const { service } = await setupTest();
-            mockRepository.templateExists.mockResolvedValueOnce(false);
 
             await expect(service.findAllByTemplateId('ghost')).rejects.toThrow(NotFoundException);
         });
@@ -70,14 +39,13 @@ describe('EmailTemplateVariableService', () => {
         it('should return the variable when found', async () => {
             const { service } = await setupTest();
 
-            const result = await service.findById('var-1');
+            const result = await service.findById(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
 
-            expect(result).toEqual(mockVariable);
+            expect(result.id).toBe(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
         });
 
         it('should throw NotFoundException when not found', async () => {
             const { service } = await setupTest();
-            mockRepository.findById.mockResolvedValueOnce(null);
 
             await expect(service.findById('ghost')).rejects.toThrow(NotFoundException);
         });
@@ -85,26 +53,27 @@ describe('EmailTemplateVariableService', () => {
 
     describe('create()', () => {
         it('should create a variable when name is unique and template exists', async () => {
-            const { service } = await setupTest();
+            const { service, emailTemplateVariableDb } = await setupTest();
 
-            const result = await service.create('tpl-1', { name: 'username' });
+            const result = await service.create(SEED_EMAIL_TEMPLATE_ID, { name: 'email' });
 
-            expect(mockRepository.create).toHaveBeenCalledWith({ name: 'username', templateId: 'tpl-1' });
-            expect(result).toEqual(mockVariable);
+            expect(result.name).toBe('email');
+            expect(result.templateId).toBe(SEED_EMAIL_TEMPLATE_ID);
+            expect(emailTemplateVariableDb.getAllByTemplateId(SEED_EMAIL_TEMPLATE_ID)).toHaveLength(2);
         });
 
         it('should throw NotFoundException when template does not exist', async () => {
             const { service } = await setupTest();
-            mockRepository.templateExists.mockResolvedValueOnce(false);
 
             await expect(service.create('ghost', { name: 'username' })).rejects.toThrow(NotFoundException);
         });
 
         it('should throw ConflictException when variable name already exists for template', async () => {
             const { service } = await setupTest();
-            mockRepository.findByNameAndTemplateId.mockResolvedValueOnce(mockVariable);
 
-            await expect(service.create('tpl-1', { name: 'username' })).rejects.toThrow(ConflictException);
+            await expect(service.create(SEED_EMAIL_TEMPLATE_ID, { name: 'username' })).rejects.toThrow(
+                ConflictException
+            );
         });
     });
 
@@ -112,47 +81,52 @@ describe('EmailTemplateVariableService', () => {
         it('should update the variable successfully', async () => {
             const { service } = await setupTest();
 
-            const result = await service.update('var-1', 'tpl-1', { name: 'newName' });
+            const result = await service.update(SEED_EMAIL_TEMPLATE_VARIABLE_ID, SEED_EMAIL_TEMPLATE_ID, {
+                name: 'newName',
+            });
 
-            expect(mockRepository.update).toHaveBeenCalledWith('var-1', { name: 'newName' });
-            expect(result).toEqual(mockVariable);
+            expect(result.name).toBe('newName');
         });
 
         it('should throw NotFoundException when variable does not exist', async () => {
             const { service } = await setupTest();
-            mockRepository.findById.mockResolvedValueOnce(null);
 
-            await expect(service.update('ghost', 'tpl-1', { name: 'x' })).rejects.toThrow(NotFoundException);
+            await expect(service.update('ghost', SEED_EMAIL_TEMPLATE_ID, { name: 'x' })).rejects.toThrow(
+                NotFoundException
+            );
         });
 
         it('should throw ConflictException when renaming to a name already taken', async () => {
-            const { service } = await setupTest();
-            mockRepository.findByNameAndTemplateId.mockResolvedValueOnce({ ...mockVariable, id: 'var-2' });
+            const { service, emailTemplateVariableDb } = await setupTest();
+            emailTemplateVariableDb.add('takenName', SEED_EMAIL_TEMPLATE_ID);
 
-            await expect(service.update('var-1', 'tpl-1', { name: 'takenName' })).rejects.toThrow(ConflictException);
+            await expect(
+                service.update(SEED_EMAIL_TEMPLATE_VARIABLE_ID, SEED_EMAIL_TEMPLATE_ID, { name: 'takenName' })
+            ).rejects.toThrow(ConflictException);
         });
 
         it('should not check for conflict when name is unchanged', async () => {
             const { service } = await setupTest();
 
-            await service.update('var-1', 'tpl-1', { name: 'username' });
+            const result = await service.update(SEED_EMAIL_TEMPLATE_VARIABLE_ID, SEED_EMAIL_TEMPLATE_ID, {
+                name: 'username',
+            });
 
-            expect(mockRepository.findByNameAndTemplateId).not.toHaveBeenCalled();
+            expect(result.name).toBe('username');
         });
     });
 
     describe('delete()', () => {
         it('should delete an existing variable', async () => {
-            const { service } = await setupTest();
+            const { service, emailTemplateVariableDb } = await setupTest();
 
-            await service.delete('var-1');
+            await service.delete(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
 
-            expect(mockRepository.deleteById).toHaveBeenCalledWith('var-1');
+            expect(emailTemplateVariableDb.getById(SEED_EMAIL_TEMPLATE_VARIABLE_ID)).toBeNull();
         });
 
         it('should throw NotFoundException when variable does not exist', async () => {
             const { service } = await setupTest();
-            mockRepository.findById.mockResolvedValueOnce(null);
 
             await expect(service.delete('ghost')).rejects.toThrow(NotFoundException);
         });

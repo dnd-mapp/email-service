@@ -1,15 +1,21 @@
 info:
-  name: get-by-id
+  name: create
   type: http
-  seq: 3
+  seq: 2
 
 http:
-  method: GET
-  url: "{{SERVER_URL}}/email-templates/:templateId"
+  method: POST
+  url: "{{SERVER_URL}}/email-templates/:templateId/variables"
   params:
     - name: templateId
       value: 4PfN3529W6OScJhGa62H1
       type: path
+  body:
+    type: json
+    data: |
+      {
+        "name": "username"
+      }
   auth: inherit
 
 settings:
