@@ -1,6 +1,6 @@
 import { parseArrayFromString } from '@/shared-utils';
 import { Transform } from 'class-transformer';
-import { ArrayMinSize, IsArray, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import {
     DEFAULT_CORS_ORIGINS,
     DEFAULT_DB_HOST,
@@ -26,7 +26,6 @@ export const EnvironmentVariableNames = {
     DB_USER: 'EMAIL_SERVICE_DB_USER',
     DB_PASSWORD: 'EMAIL_SERVICE_DB_PASSWORD',
     RESEND_API_KEY: 'RESEND_API_KEY',
-    RESEND_FROM: 'RESEND_FROM',
 } as const;
 
 export class EnvironmentVariablesSchema {
@@ -85,9 +84,4 @@ export class EnvironmentVariablesSchema {
     @IsNotEmpty()
     @IsString()
     public [EnvironmentVariableNames.RESEND_API_KEY]!: string;
-
-    @IsEmail()
-    @IsNotEmpty()
-    @IsString()
-    public [EnvironmentVariableNames.RESEND_FROM]!: string;
 }

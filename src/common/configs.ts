@@ -30,7 +30,6 @@ export interface DatabaseConfig {
 
 export interface ResendConfig {
     apiKey: string;
-    from: string;
 }
 
 export interface AppConfig {
