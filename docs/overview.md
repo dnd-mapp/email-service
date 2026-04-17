@@ -33,9 +33,9 @@ The email service is a NestJS microservice in the D&D Mapp platform responsible 
 
 The service uses a MySQL database accessed via Prisma.
 
-```
+```text
 SenderEmail
-  id          String   @id @default(cuid())
+  id          String   @id @default(nanoid())
   name        String
   email       String   @unique
   createdAt   DateTime @default(now())
@@ -43,7 +43,7 @@ SenderEmail
   templates   EmailTemplate[]
 
 EmailTemplate
-  id          String   @id @default(cuid())
+  id          String   @id @default(nanoid())
   name        String   @unique
   subject     String
   content     String   @db.Text
@@ -54,7 +54,7 @@ EmailTemplate
   updatedAt   DateTime @updatedAt
 
 EmailTemplateVariable
-  id          String   @id @default(cuid())
+  id          String   @id @default(nanoid())
   name        String
   templateId  String
   template    EmailTemplate @relation(...)
