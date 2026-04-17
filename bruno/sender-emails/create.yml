@@ -1,0 +1,22 @@
+info:
+  name: create
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{SERVER_URL}}/sender-emails"
+  body:
+    type: json
+    data: |
+      {
+        "name": "D&D Mapp Security",
+        "email": "security@dndmapp.nl.eu.org"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

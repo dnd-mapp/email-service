@@ -4,5 +4,4 @@ import { EnvironmentVariableNames } from '../validation/environment-variables.sc
 
 export const resendConfig = registerAs<ResendConfig>(ConfigurationNamespaces.RESEND, () => ({
     apiKey: process.env[EnvironmentVariableNames.RESEND_API_KEY]!,
-    from: process.env[EnvironmentVariableNames.RESEND_FROM]!,
 }));

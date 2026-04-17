@@ -11,8 +11,9 @@ http:
     data: |
       {
         "to": "oscar.wellner@gmail.com",
-        "template": "welcome",
+        "templateName": "request-change-password",
         "variables": {
+          "resetLink": "https://dev.dndmapp.nl.eu.org",
           "username": "NoNamer777"
         }
       }

@@ -17,7 +17,9 @@ export default defineConfig(
             },
             sourceType: 'commonjs',
             parserOptions: {
-                projectService: true,
+                projectService: {
+                    allowDefaultProject: ['*.mjs', '*.ts'],
+                },
                 tsconfigRootDir: import.meta.dirname,
             },
         },

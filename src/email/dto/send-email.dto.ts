@@ -1,15 +1,15 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
-import { EmailTemplates, type EmailTemplate } from '../email-template.enum';
+import { IsEmail, IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
+import { SendEmail } from '../domain/send-email.model';
 
-export class SendEmailDto {
+export class SendEmailDto implements SendEmail {
     @IsEmail()
     @IsNotEmpty()
     @IsString()
     public to!: string;
 
-    @IsEnum(EmailTemplates)
     @IsNotEmpty()
-    public template!: EmailTemplate;
+    @IsString()
+    public templateName!: string;
 
     @IsObject()
     @IsOptional()

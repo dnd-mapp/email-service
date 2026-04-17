@@ -2,6 +2,7 @@ import { AppConfig, ConfigurationNamespaces, ResendConfig } from '@/common';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
+import { SenderEmail } from '../../sender-email/domain/sender-email.model';
 
 @Injectable()
 export class ResendService implements OnModuleInit {
@@ -10,24 +11,21 @@ export class ResendService implements OnModuleInit {
 
     private client!: Resend;
 
-    private from!: string;
-
     constructor(configService: ConfigService<AppConfig, true>) {
         this.configService = configService;
     }
 
     public onModuleInit() {
-        const { apiKey, from } = this.configService.get<ResendConfig>(ConfigurationNamespaces.RESEND);
+        const { apiKey } = this.configService.get<ResendConfig>(ConfigurationNamespaces.RESEND);
 
         this.client = new Resend(apiKey);
-        this.from = from;
     }
 
-    public async send(to: string, subject: string, html: string) {
-        this.logger.debug(`Dispatching email to "${to}" via Resend`);
+    public async send(to: string, subject: string, html: string, sender: SenderEmail): Promise<void> {
+        this.logger.debug(`Dispatching email to "${to}" via Resend using sender "${sender.email}"`);
 
         const { error } = await this.client.emails.send({
-            from: `D&D Mapp <${this.from}>`,
+            from: `${sender.name} <${sender.email}>`,
             to: to,
             subject: subject,
             html: html,

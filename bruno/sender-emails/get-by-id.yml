@@ -1,0 +1,19 @@
+info:
+  name: get-by-id
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{SERVER_URL}}/sender-emails/:senderEmailId"
+  params:
+    - name: senderEmailId
+      value: -VOEY4eDVjDiO9QwoKFEc
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

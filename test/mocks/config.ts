@@ -18,8 +18,7 @@ export const defaultMockDatabaseConfig: DatabaseConfig = {
 };
 
 export const defaultMockResendConfig: ResendConfig = {
-    apiKey: 're_test_key',
-    from: 'test@example.com',
+    apiKey: 're_mock_api_key',
 };
 
 export class MockConfigService {

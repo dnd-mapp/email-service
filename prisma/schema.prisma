@@ -1,7 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// This is your Prisma schema file, learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
     importFileExtension = ""
@@ -13,12 +10,55 @@ datasource db {
     provider = "mysql"
 }
 
+model SenderEmail {
+    id    String @id @default(nanoid())
+    name  String
+    email String @unique
+
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    templates EmailTemplate[]
+
+    @@map(name: "sender_emails")
+}
+
+model EmailTemplate {
+    id      String @id @default(nanoid())
+    name    String @unique
+    subject String
+    content String @db.LongText
+
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    senderId  String                  @map(name: "sender_id")
+    sender    SenderEmail             @relation(fields: [senderId], references: [id], map: "fk_email_template_sender_email")
+    variables EmailTemplateVariable[]
+
+    @@map(name: "email_templates")
+}
+
+model EmailTemplateVariable {
+    id   String @id @default(nanoid())
+    name String
+
+    createdAt DateTime @default(now()) @map(name: "created_at")
+    updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+    templateId String        @map(name: "template_id")
+    template   EmailTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade, map: "fk_email_template_variable_email_template")
+
+    @@unique([templateId, name])
+    @@map(name: "email_template_variables")
+}
+
 model EmailLog {
-    id           String   @id @default(cuid())
+    id           String   @id @default(nanoid())
     to           String
     status       String
-    errorMessage String?  @map("error_message")
-    sentAt       DateTime @default(now()) @map("sent_at")
+    sentAt       DateTime @default(now()) @map(name: "sent_at")
+    errorMessage String?  @map(name: "error_message")
 
-    @@map("email_log")
+    @@map(name: "email_logs")
 }
