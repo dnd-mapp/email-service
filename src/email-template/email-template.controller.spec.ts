@@ -3,6 +3,7 @@ import { MockPrisma, createTestModule } from '@/test';
 import { NotFoundException } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { SEED_SENDER_EMAIL_ID } from '../sender-email/test';
+import { CreateEmailTemplateDto, UpdateEmailTemplateDto } from './dtos';
 import { EmailTemplateController } from './email-template.controller';
 import { EmailTemplateModule } from './email-template.module';
 import { SEED_EMAIL_TEMPLATE_ID } from './test';
@@ -29,19 +30,20 @@ describe('EmailTemplateController', () => {
 
     it('should create an email template and set the Location header', async () => {
         const { controller, emailTemplateDb } = await setupTest();
-        const mockRes = { header: vi.fn() } as unknown as FastifyReply;
+        const headerMock = vi.fn();
+        const mockRes = { header: headerMock } as unknown as FastifyReply;
         const dto = {
             name: 'New Template',
             subject: 'Hello',
             content: '<p>Hi</p>',
             senderId: SEED_SENDER_EMAIL_ID,
-        };
+        } as CreateEmailTemplateDto;
 
-        const result = await controller.create(dto as any, mockRes);
+        const result = await controller.create(dto, mockRes);
 
         expect(result.name).toBe('New Template');
         expect(result.subject).toBe('Hello');
-        expect(mockRes.header).toHaveBeenCalledWith('Location', `/email-templates/${result.id}`);
+        expect(headerMock).toHaveBeenCalledWith('Location', `/email-templates/${result.id}`);
         expect(emailTemplateDb.getAll()).toHaveLength(2);
     });
 
@@ -56,7 +58,9 @@ describe('EmailTemplateController', () => {
     it('should update an email template', async () => {
         const { controller } = await setupTest();
 
-        const result = await controller.update(SEED_EMAIL_TEMPLATE_ID, { subject: 'Updated Subject' } as any);
+        const result = await controller.update(SEED_EMAIL_TEMPLATE_ID, {
+            subject: 'Updated Subject',
+        } as UpdateEmailTemplateDto);
 
         expect(result.id).toBe(SEED_EMAIL_TEMPLATE_ID);
         expect(result.subject).toBe('Updated Subject');
@@ -65,7 +69,9 @@ describe('EmailTemplateController', () => {
     it('should partially update an email template', async () => {
         const { controller } = await setupTest();
 
-        const result = await controller.patch(SEED_EMAIL_TEMPLATE_ID, { subject: 'Patched Subject' } as any);
+        const result = await controller.patch(SEED_EMAIL_TEMPLATE_ID, {
+            subject: 'Patched Subject',
+        } as UpdateEmailTemplateDto);
 
         expect(result.id).toBe(SEED_EMAIL_TEMPLATE_ID);
         expect(result.subject).toBe('Patched Subject');

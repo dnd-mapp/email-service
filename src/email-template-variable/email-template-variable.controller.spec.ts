@@ -3,6 +3,7 @@ import { MockPrisma, createTestModule } from '@/test';
 import { NotFoundException } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { SEED_EMAIL_TEMPLATE_ID } from '../email-template/test';
+import { CreateEmailTemplateVariableDto, UpdateEmailTemplateVariableDto } from './dtos';
 import { EmailTemplateVariableController } from './email-template-variable.controller';
 import { EmailTemplateVariableModule } from './email-template-variable.module';
 import { SEED_EMAIL_TEMPLATE_VARIABLE_ID } from './test';
@@ -29,13 +30,14 @@ describe('EmailTemplateVariableController', () => {
 
     it('should create a variable and set the Location header', async () => {
         const { controller, emailTemplateVariableDb } = await setupTest();
-        const mockRes = { header: vi.fn() } as unknown as FastifyReply;
-        const dto = { name: 'newVar' };
+        const headerMock = vi.fn();
+        const mockRes = { header: headerMock } as unknown as FastifyReply;
+        const dto = { name: 'newVar' } as CreateEmailTemplateVariableDto;
 
-        const result = await controller.create(SEED_EMAIL_TEMPLATE_ID, dto as any, mockRes);
+        const result = await controller.create(SEED_EMAIL_TEMPLATE_ID, dto, mockRes);
 
         expect(result.name).toBe('newVar');
-        expect(mockRes.header).toHaveBeenCalledWith(
+        expect(headerMock).toHaveBeenCalledWith(
             'Location',
             `/email-templates/${SEED_EMAIL_TEMPLATE_ID}/variables/${result.id}`
         );
@@ -55,7 +57,7 @@ describe('EmailTemplateVariableController', () => {
 
         const result = await controller.update(SEED_EMAIL_TEMPLATE_ID, SEED_EMAIL_TEMPLATE_VARIABLE_ID, {
             name: 'updatedVar',
-        } as any);
+        } as UpdateEmailTemplateVariableDto);
 
         expect(result.id).toBe(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
         expect(result.name).toBe('updatedVar');
@@ -66,7 +68,7 @@ describe('EmailTemplateVariableController', () => {
 
         const result = await controller.patch(SEED_EMAIL_TEMPLATE_ID, SEED_EMAIL_TEMPLATE_VARIABLE_ID, {
             name: 'patchedVar',
-        } as any);
+        } as UpdateEmailTemplateVariableDto);
 
         expect(result.id).toBe(SEED_EMAIL_TEMPLATE_VARIABLE_ID);
         expect(result.name).toBe('patchedVar');

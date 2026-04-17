@@ -2,6 +2,7 @@ import { DatabaseService } from '@/database';
 import { MockPrisma, createTestModule } from '@/test';
 import { NotFoundException } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
+import { CreateSenderEmailDto, UpdateSenderEmailDto } from './dtos';
 import { SenderEmailController } from './sender-email.controller';
 import { SenderEmailModule } from './sender-email.module';
 import { SEED_SENDER_EMAIL_ADDRESS, SEED_SENDER_EMAIL_ID } from './test';
@@ -28,14 +29,15 @@ describe('SenderEmailController', () => {
 
     it('should create a sender email and set the Location header', async () => {
         const { controller, senderEmailDb } = await setupTest();
-        const mockRes = { header: vi.fn() } as unknown as FastifyReply;
-        const dto = { name: 'New Sender', email: 'new@example.com' };
+        const headerMock = vi.fn();
+        const mockRes = { header: headerMock } as unknown as FastifyReply;
+        const dto = { name: 'New Sender', email: 'new@example.com' } as CreateSenderEmailDto;
 
-        const result = await controller.create(dto as any, mockRes);
+        const result = await controller.create(dto, mockRes);
 
         expect(result.name).toBe('New Sender');
         expect(result.email).toBe('new@example.com');
-        expect(mockRes.header).toHaveBeenCalledWith('Location', `/sender-emails/${result.id}`);
+        expect(headerMock).toHaveBeenCalledWith('Location', `/sender-emails/${result.id}`);
         expect(senderEmailDb.getAll()).toHaveLength(2);
     });
 
@@ -51,7 +53,7 @@ describe('SenderEmailController', () => {
     it('should update a sender email', async () => {
         const { controller } = await setupTest();
 
-        const result = await controller.update(SEED_SENDER_EMAIL_ID, { name: 'Updated Name' } as any);
+        const result = await controller.update(SEED_SENDER_EMAIL_ID, { name: 'Updated Name' } as UpdateSenderEmailDto);
 
         expect(result.id).toBe(SEED_SENDER_EMAIL_ID);
         expect(result.name).toBe('Updated Name');
@@ -60,7 +62,9 @@ describe('SenderEmailController', () => {
     it('should partially update a sender email', async () => {
         const { controller } = await setupTest();
 
-        const result = await controller.patch(SEED_SENDER_EMAIL_ID, { email: 'patched@example.com' } as any);
+        const result = await controller.patch(SEED_SENDER_EMAIL_ID, {
+            email: 'patched@example.com',
+        } as UpdateSenderEmailDto);
 
         expect(result.id).toBe(SEED_SENDER_EMAIL_ID);
         expect(result.email).toBe('patched@example.com');
