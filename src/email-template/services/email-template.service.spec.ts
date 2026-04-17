@@ -39,10 +39,7 @@ describe('EmailTemplateService', () => {
 
     async function setupTest() {
         const module = await Test.createTestingModule({
-            providers: [
-                EmailTemplateService,
-                { provide: EmailTemplateRepository, useValue: mockRepository },
-            ],
+            providers: [EmailTemplateService, { provide: EmailTemplateRepository, useValue: mockRepository }],
         }).compile();
 
         module.useLogger(false);
@@ -103,7 +100,7 @@ describe('EmailTemplateService', () => {
             mockRepository.findByName.mockResolvedValueOnce(mockTemplate);
 
             await expect(
-                service.create({ name: 'welcome', subject: 'S', content: 'C', senderId: 'sender-1' }),
+                service.create({ name: 'welcome', subject: 'S', content: 'C', senderId: 'sender-1' })
             ).rejects.toThrow(ConflictException);
         });
 
@@ -112,7 +109,7 @@ describe('EmailTemplateService', () => {
             mockRepository.senderExists.mockResolvedValueOnce(false);
 
             await expect(
-                service.create({ name: 'new-tpl', subject: 'S', content: 'C', senderId: 'ghost' }),
+                service.create({ name: 'new-tpl', subject: 'S', content: 'C', senderId: 'ghost' })
             ).rejects.toThrow(NotFoundException);
         });
     });

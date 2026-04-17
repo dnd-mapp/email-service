@@ -33,10 +33,10 @@ describe('TemplateService', () => {
         it('should interpolate multiple variables', async () => {
             const { service } = await setupTest();
 
-            const { html } = service.render(
-                '<a href="{{link}}">Hello {{username}}</a>',
-                { username: 'Bob', link: 'https://example.com' },
-            );
+            const { html } = service.render('<a href="{{link}}">Hello {{username}}</a>', {
+                username: 'Bob',
+                link: 'https://example.com',
+            });
 
             expect(html).toContain('Bob');
             expect(html).toContain('https://example.com');

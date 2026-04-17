@@ -27,10 +27,7 @@ describe('ResendService', () => {
 
     async function setupTest() {
         const module = await Test.createTestingModule({
-            providers: [
-                ResendService,
-                { provide: ConfigService, useFactory: () => new MockConfigService() },
-            ],
+            providers: [ResendService, { provide: ConfigService, useFactory: () => new MockConfigService() }],
         }).compile();
 
         module.useLogger(false);
@@ -61,7 +58,7 @@ describe('ResendService', () => {
         mockEmailsSend.mockResolvedValueOnce({ data: null, error: { message: 'Invalid API key' } });
 
         await expect(service.send('user@example.com', 'Welcome', '<p>Hi</p>', mockSender)).rejects.toThrow(
-            'Invalid API key',
+            'Invalid API key'
         );
     });
 });

@@ -73,7 +73,7 @@ describe('EmailService', () => {
             'user@example.com',
             'Welcome to D&D Mapp',
             '<p>Mock HTML</p>',
-            mockSender,
+            mockSender
         );
         expect(mockLog).toHaveBeenCalledWith('user@example.com', EmailLogStatuses.SUCCESS);
     });
@@ -82,9 +82,7 @@ describe('EmailService', () => {
         const { service, resendService } = await setupTest();
         resendService.send.mockRejectedValueOnce(new Error('API error'));
 
-        await expect(service.sendEmail('user@example.com', 'welcome', {})).rejects.toThrow(
-            ServiceUnavailableException,
-        );
+        await expect(service.sendEmail('user@example.com', 'welcome', {})).rejects.toThrow(ServiceUnavailableException);
 
         expect(mockLog).toHaveBeenCalledWith('user@example.com', EmailLogStatuses.FAILURE, 'API error');
     });
@@ -93,18 +91,14 @@ describe('EmailService', () => {
         const { service } = await setupTest();
         mockEmailTemplateService.findByName.mockRejectedValueOnce(new NotFoundException('not found'));
 
-        await expect(service.sendEmail('user@example.com', 'no-such-template', {})).rejects.toThrow(
-            NotFoundException,
-        );
+        await expect(service.sendEmail('user@example.com', 'no-such-template', {})).rejects.toThrow(NotFoundException);
     });
 
     it('should throw ServiceUnavailableException when the template has no sender', async () => {
         const { service } = await setupTest();
         mockEmailTemplateService.findByName.mockResolvedValueOnce({ ...mockTemplate, sender: undefined });
 
-        await expect(service.sendEmail('user@example.com', 'welcome', {})).rejects.toThrow(
-            ServiceUnavailableException,
-        );
+        await expect(service.sendEmail('user@example.com', 'welcome', {})).rejects.toThrow(ServiceUnavailableException);
     });
 
     it('should throw BadRequestException when required template variables are missing', async () => {
@@ -113,12 +107,18 @@ describe('EmailService', () => {
             ...mockTemplate,
             variables: [
                 { id: 'v-1', name: 'username', templateId: 'tpl-1', createdAt: new Date(), updatedAt: new Date() },
-                { id: 'v-2', name: 'verificationLink', templateId: 'tpl-1', createdAt: new Date(), updatedAt: new Date() },
+                {
+                    id: 'v-2',
+                    name: 'verificationLink',
+                    templateId: 'tpl-1',
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
             ],
         });
 
         await expect(service.sendEmail('user@example.com', 'welcome', { username: 'Alice' })).rejects.toThrow(
-            BadRequestException,
+            BadRequestException
         );
     });
 
@@ -128,12 +128,18 @@ describe('EmailService', () => {
             ...mockTemplate,
             variables: [
                 { id: 'v-1', name: 'username', templateId: 'tpl-1', createdAt: new Date(), updatedAt: new Date() },
-                { id: 'v-2', name: 'verificationLink', templateId: 'tpl-1', createdAt: new Date(), updatedAt: new Date() },
+                {
+                    id: 'v-2',
+                    name: 'verificationLink',
+                    templateId: 'tpl-1',
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
             ],
         });
 
         await expect(service.sendEmail('user@example.com', 'welcome', {})).rejects.toThrow(
-            'Missing required template variables: username, verificationLink',
+            'Missing required template variables: username, verificationLink'
         );
     });
 
@@ -146,8 +152,6 @@ describe('EmailService', () => {
             ],
         });
 
-        await expect(
-            service.sendEmail('user@example.com', 'welcome', { username: 'Alice' })
-        ).resolves.not.toThrow();
+        await expect(service.sendEmail('user@example.com', 'welcome', { username: 'Alice' })).resolves.not.toThrow();
     });
 });

@@ -26,10 +26,7 @@ describe('SenderEmailService', () => {
 
     async function setupTest() {
         const module = await Test.createTestingModule({
-            providers: [
-                SenderEmailService,
-                { provide: SenderEmailRepository, useValue: mockRepository },
-            ],
+            providers: [SenderEmailService, { provide: SenderEmailRepository, useValue: mockRepository }],
         }).compile();
 
         module.useLogger(false);
@@ -93,9 +90,9 @@ describe('SenderEmailService', () => {
             const { service } = await setupTest();
             mockRepository.findByEmail.mockResolvedValueOnce(mockSender);
 
-            await expect(
-                service.create({ name: 'D&D Mapp', email: 'info@dndmapp.nl.eu.org' }),
-            ).rejects.toThrow(ConflictException);
+            await expect(service.create({ name: 'D&D Mapp', email: 'info@dndmapp.nl.eu.org' })).rejects.toThrow(
+                ConflictException
+            );
         });
     });
 
@@ -112,9 +109,9 @@ describe('SenderEmailService', () => {
             const { service } = await setupTest();
             mockRepository.findByEmail.mockResolvedValueOnce({ ...mockSender, id: 'sender-2' });
 
-            await expect(
-                service.update('sender-1', { email: 'info@dndmapp.nl.eu.org' }),
-            ).rejects.toThrow(ConflictException);
+            await expect(service.update('sender-1', { email: 'info@dndmapp.nl.eu.org' })).rejects.toThrow(
+                ConflictException
+            );
         });
 
         it('should throw NotFoundException when the sender does not exist', async () => {
