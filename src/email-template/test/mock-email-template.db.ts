@@ -46,13 +46,24 @@ export class MockEmailTemplateDB {
 
     public add(name: string, subject: string, content: string, senderId: string): EmailTemplateRecord {
         const now = new Date();
-        const record: EmailTemplateRecord = { id: nanoid(), name, subject, content, senderId, createdAt: now, updatedAt: now };
+        const record: EmailTemplateRecord = {
+            id: nanoid(),
+            name,
+            subject,
+            content,
+            senderId,
+            createdAt: now,
+            updatedAt: now,
+        };
 
         this.records[record.id] = record;
         return record;
     }
 
-    public update(id: string, data: { name?: string; subject?: string; content?: string; senderId?: string }): EmailTemplateRecord | null {
+    public update(
+        id: string,
+        data: { name?: string; subject?: string; content?: string; senderId?: string }
+    ): EmailTemplateRecord | null {
         const record = this.records[id];
 
         if (!record) return null;

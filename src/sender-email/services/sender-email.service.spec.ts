@@ -1,8 +1,8 @@
 import { DatabaseService } from '@/database';
 import { MockPrisma, createTestModule } from '@/test';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { SEED_SENDER_EMAIL_ADDRESS, SEED_SENDER_EMAIL_ID } from '../test';
 import { SenderEmailModule } from '../sender-email.module';
+import { SEED_SENDER_EMAIL_ADDRESS, SEED_SENDER_EMAIL_ID } from '../test';
 import { SenderEmailService } from './sender-email.service';
 
 describe('SenderEmailService', () => {

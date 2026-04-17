@@ -22,7 +22,15 @@ export class MockPrismaEmailTemplateDB {
     ) {}
 
     private toPayload(
-        record: { id: string; name: string; subject: string; content: string; senderId: string; createdAt: Date; updatedAt: Date },
+        record: {
+            id: string;
+            name: string;
+            subject: string;
+            content: string;
+            senderId: string;
+            createdAt: Date;
+            updatedAt: Date;
+        },
         include?: { sender?: boolean; variables?: boolean }
     ): EmailTemplatePayload {
         const payload: EmailTemplatePayload = { ...record };

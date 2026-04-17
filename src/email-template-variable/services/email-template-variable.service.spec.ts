@@ -1,9 +1,9 @@
 import { DatabaseService } from '@/database';
 import { MockPrisma, createTestModule } from '@/test';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { SEED_EMAIL_TEMPLATE_VARIABLE_ID } from '../test';
 import { SEED_EMAIL_TEMPLATE_ID } from '../../email-template/test';
 import { EmailTemplateVariableModule } from '../email-template-variable.module';
+import { SEED_EMAIL_TEMPLATE_VARIABLE_ID } from '../test';
 import { EmailTemplateVariableService } from './email-template-variable.service';
 
 describe('EmailTemplateVariableService', () => {

@@ -3,9 +3,9 @@ import { MockEmailTemplateVariableDB } from '@/email-template-variable/test';
 import { MockEmailTemplateDB } from '@/email-template/test';
 import { MockEmailLogDB } from '@/email/test';
 import { MockSenderEmailDB } from '@/sender-email/test';
+import { MockPrismaEmailLogDB } from './db/mock-prisma-email-log.db';
 import { MockPrismaEmailTemplateVariableDB } from './db/mock-prisma-email-template-variable.db';
 import { MockPrismaEmailTemplateDB } from './db/mock-prisma-email-template.db';
-import { MockPrismaEmailLogDB } from './db/mock-prisma-email-log.db';
 import { MockPrismaSenderEmailDB } from './db/mock-prisma-sender-email.db';
 
 export class MockPrisma implements PrismaLikeClient {

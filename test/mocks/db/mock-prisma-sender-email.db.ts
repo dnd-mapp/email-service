@@ -7,10 +7,7 @@ export class MockPrismaSenderEmailDB {
         return await Promise.resolve(this.db.getAll());
     }
 
-    public async findUnique(params: {
-        where: { id?: string; email?: string };
-        select?: { id?: boolean };
-    }) {
+    public async findUnique(params: { where: { id?: string; email?: string }; select?: { id?: boolean } }) {
         const { where } = params;
         let record = null;
 

@@ -1,8 +1,8 @@
 import { DatabaseService } from '@/database';
 import { MockPrisma, createTestModule } from '@/test';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { SEED_EMAIL_TEMPLATE_ID } from '../test';
 import { EmailTemplateModule } from '../email-template.module';
+import { SEED_EMAIL_TEMPLATE_ID } from '../test';
 import { EmailTemplateService } from './email-template.service';
 
 describe('EmailTemplateService', () => {
