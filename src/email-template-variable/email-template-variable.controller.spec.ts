@@ -55,7 +55,7 @@ describe('EmailTemplateVariableController', () => {
     it('should call findById with the variable id', async () => {
         const { controller } = await setupTest();
 
-        const result = await controller.findById('tpl-1', 'var-1');
+        const result = await controller.findById('var-1');
 
         expect(mockService.findById).toHaveBeenCalledWith('var-1');
         expect(result).toEqual(mockVariable);
@@ -64,7 +64,7 @@ describe('EmailTemplateVariableController', () => {
     it('should call delete with the variable id', async () => {
         const { controller } = await setupTest();
 
-        await controller.delete('tpl-1', 'var-1');
+        await controller.delete('var-1');
 
         expect(mockService.delete).toHaveBeenCalledWith('var-1');
     });
