@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { EmailTemplateVariableDto } from '../../email-template-variable/dtos';
 import { SenderEmailDto } from '../../sender-email/dtos';
@@ -25,27 +26,41 @@ export class EmailTemplateDto implements EmailTemplate {
         return dto;
     }
 
+    /** Unique identifier of the email template. */
+    @ApiProperty()
     public id!: string;
 
+    /** Human-readable name used to look up the template. */
     @IsNotEmpty()
     @IsString()
     public name!: string;
 
+    /** Subject line rendered for outbound emails. */
     @IsNotEmpty()
     @IsString()
     public subject!: string;
 
+    /** Handlebars template content for the email body. */
     @IsNotEmpty()
     @IsString()
     public content!: string;
 
+    /** ID of the sender email address associated with this template. */
     @IsNotEmpty()
     @IsString()
     public senderId!: string;
 
+    /** Resolved sender email address. */
     public sender?: SenderEmailDto;
+
+    /** Variables defined for this template. */
     public variables?: EmailTemplateVariableDto[];
 
+    /** Timestamp when the template was created. */
+    @ApiProperty()
     public createdAt!: Date;
+
+    /** Timestamp when the template was last updated. */
+    @ApiProperty()
     public updatedAt!: Date;
 }

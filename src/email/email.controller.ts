@@ -1,4 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { ApiAcceptedResponse } from '@nestjs/swagger';
 import { SendEmailDto } from './dto/send-email.dto';
 import { EmailService } from './services';
 
@@ -16,6 +17,7 @@ export class EmailController {
      * @remarks Dispatches an outbound email to the specified recipient via
      * Resend and records the outcome in the audit log.
      */
+    @ApiAcceptedResponse({ description: 'Email accepted for delivery.' })
     @HttpCode(HttpStatus.ACCEPTED)
     @Post()
     public async sendEmail(@Body() dto: SendEmailDto) {

@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
+import { ApiCreatedResponse, ApiNoContentResponse } from '@nestjs/swagger';
 import { type FastifyReply } from 'fastify';
 import { CreateEmailTemplateDto, UpdateEmailTemplateDto } from './dtos';
 import { EmailTemplateService } from './services';
@@ -22,6 +23,7 @@ export class EmailTemplateController {
     /**
      * Create a new email template.
      */
+    @ApiCreatedResponse({ description: 'Email template created.' })
     @HttpCode(HttpStatus.CREATED)
     @Post()
     public async create(@Body() dto: CreateEmailTemplateDto, @Res({ passthrough: true }) res: FastifyReply) {
@@ -34,6 +36,8 @@ export class EmailTemplateController {
 
     /**
      * Get an email template by its ID.
+     *
+     * @param templateId - The ID of the email template.
      */
     @Get('/:templateId')
     public async findById(@Param('templateId') templateId: string) {
@@ -42,6 +46,8 @@ export class EmailTemplateController {
 
     /**
      * Update an email template.
+     *
+     * @param templateId - The ID of the email template.
      */
     @Put('/:templateId')
     public async update(@Param('templateId') templateId: string, @Body() dto: UpdateEmailTemplateDto) {
@@ -50,6 +56,8 @@ export class EmailTemplateController {
 
     /**
      * Partially update an email template.
+     *
+     * @param templateId - The ID of the email template.
      */
     @Patch('/:templateId')
     public async patch(@Param('templateId') templateId: string, @Body() dto: UpdateEmailTemplateDto) {
@@ -58,7 +66,10 @@ export class EmailTemplateController {
 
     /**
      * Delete an email template.
+     *
+     * @param templateId - The ID of the email template.
      */
+    @ApiNoContentResponse({ description: 'Email template deleted.' })
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete('/:templateId')
     public async delete(@Param('templateId') templateId: string) {
