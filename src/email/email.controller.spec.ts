@@ -2,7 +2,6 @@ import { DatabaseModule } from '@/database';
 import { MockConfigService, MockPrisma, MockResendService, MockTemplateService } from '@/test';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { EmailTemplates } from './email-template.enum';
 import { EmailController } from './email.controller';
 import { EmailModule } from './email.module';
 import { EmailService } from './services/email.service';
@@ -31,16 +30,16 @@ describe('EmailController', () => {
         };
     }
 
-    it('should call emailService.sendEmail with the recipient address, template, and variables', async () => {
+    it('should call emailService.sendEmail with the recipient address, templateName, and variables', async () => {
         const { controller, service } = await setupTest();
         const spy = vi.spyOn(service, 'sendEmail').mockResolvedValue();
 
         await controller.sendEmail({
             to: 'user@example.com',
-            template: EmailTemplates.WELCOME,
+            templateName: 'welcome',
             variables: { userName: 'Alice' },
         });
 
-        expect(spy).toHaveBeenCalledWith('user@example.com', EmailTemplates.WELCOME, { userName: 'Alice' });
+        expect(spy).toHaveBeenCalledWith('user@example.com', 'welcome', { userName: 'Alice' });
     });
 });
