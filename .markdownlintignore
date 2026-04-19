@@ -1,4 +1,3 @@
 dist/
-node_modules/
 
-docs/release-notes-template.md
+node_modules/
