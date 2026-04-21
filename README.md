@@ -292,6 +292,8 @@ This repository is part of the **D&D Mapp** internal ecosystem. At this time, we
 
 Refer to our global [CONTRIBUTING.md](https://github.com/dnd-mapp/.github/blob/main/CONTRIBUTING.md) for organizational policies.
 
+For details on how releases are triggered, versioned, and published, see the [Release Pipeline](https://github.com/dnd-mapp/.github/blob/main/docs/release-pipeline.md) guide.
+
 ---
 
 ## 🛡️ License
