@@ -1,8 +1,8 @@
-import { DatabaseModule } from '@/database';
+import { DatabaseModule } from '@dnd-mapp/shared-backend';
 import { Module } from '@nestjs/common';
 import { EmailTemplateController } from './email-template.controller';
 import { EmailTemplateRepository } from './email-template.repository';
-import { EmailTemplateService } from './services';
+import { EmailTemplateService } from './email-template.service';
 
 @Module({
     imports: [DatabaseModule],

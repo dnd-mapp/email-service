@@ -1,8 +1,8 @@
-import { AppConfig, ConfigurationNamespaces, ResendConfig } from '@/common';
+import { AppConfig, AppConfigurationNamespaces, ResendConfig } from '@/common';
+import { SenderEmail } from '@/sender-email/domain';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
-import { SenderEmail } from '../../sender-email/domain/sender-email.model';
 
 @Injectable()
 export class ResendService implements OnModuleInit {
@@ -16,7 +16,7 @@ export class ResendService implements OnModuleInit {
     }
 
     public onModuleInit() {
-        const { apiKey } = this.configService.get<ResendConfig>(ConfigurationNamespaces.RESEND);
+        const { apiKey } = this.configService.get<ResendConfig>(AppConfigurationNamespaces.RESEND);
 
         this.client = new Resend(apiKey);
     }

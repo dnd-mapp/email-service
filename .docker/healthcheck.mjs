@@ -1,5 +1,5 @@
 try {
-    const response = await fetch('http://localhost:4350/health/readiness');
+    const response = await fetch('http://localhost:4450/health/readiness');
 
     if (!response.ok) {
         console.error(`Status: "${response.status}"`);

@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateEmailTemplateVariableDto, EmailTemplateVariableDto, UpdateEmailTemplateVariableDto } from '../dtos';
-import { EmailTemplateVariableRepository } from '../email-template-variable.repository';
+import { CreateEmailTemplateVariableDto, EmailTemplateVariableDto, UpdateEmailTemplateVariableDto } from './dtos';
+import { EmailTemplateVariableRepository } from './email-template-variable.repository';
 
 @Injectable()
 export class EmailTemplateVariableService {

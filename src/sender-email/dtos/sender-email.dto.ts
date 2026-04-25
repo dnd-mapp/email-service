@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { SenderEmail } from '../domain/sender-email.model';
+import { SenderEmail } from '../domain';
 
 export class SenderEmailDto implements SenderEmail {
     public static from(data: SenderEmail) {

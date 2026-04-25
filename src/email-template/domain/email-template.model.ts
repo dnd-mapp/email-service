@@ -1,5 +1,5 @@
-import { EmailTemplateVariable } from '../../email-template-variable/domain/email-template-variable.model';
-import { SenderEmail } from '../../sender-email/domain/sender-email.model';
+import { EmailTemplateVariable } from '@/email-template-variable/domain';
+import { SenderEmail } from '@/sender-email/domain';
 
 export interface EmailTemplate {
     id: string;

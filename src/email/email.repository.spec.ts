@@ -1,8 +1,8 @@
-import { DatabaseService } from '@/database';
 import { MockPrisma } from '@/test';
+import { DatabaseService } from '@dnd-mapp/shared-backend';
 import { InternalServerErrorException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { EmailLogStatuses } from './email-log-statuses.enum';
+import { EmailLogStatuses } from './domain';
 import { EmailRepository } from './email.repository';
 
 describe('EmailRepository', () => {

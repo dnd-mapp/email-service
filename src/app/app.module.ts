@@ -1,20 +1,26 @@
-import { DatabaseModule } from '@/database';
+import { EmailModule } from '@/email';
+import { EmailTemplateModule } from '@/email-template';
+import { EmailTemplateVariableModule } from '@/email-template-variable';
 import { PrismaClient } from '@/prisma/client';
+import { SenderEmailModule } from '@/sender-email';
+import {
+    createThrottlerOptions,
+    DatabaseModule,
+    HealthModule,
+    provideAppThrottler,
+    provideGlobalSerialization,
+} from '@dnd-mapp/shared-backend';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { EmailModule } from '../email';
-import { EmailTemplateVariableModule } from '../email-template-variable/email-template-variable.module';
-import { EmailTemplateModule } from '../email-template/email-template.module';
-import { SenderEmailModule } from '../sender-email/sender-email.module';
-import { configModuleOptions, provideAppThrottler, provideGlobalSerialization, throttlerModuleOptions } from './config';
-import { HealthModule } from './health/health.module';
+import { configModuleOptions } from './config';
+import { HealthController } from './health/health.controller';
 
 @Module({
     imports: [
         ConfigModule.forRoot(configModuleOptions),
-        ThrottlerModule.forRoot(throttlerModuleOptions),
-        HealthModule,
+        ThrottlerModule.forRoot(createThrottlerOptions()),
+        HealthModule.forRoot(HealthController),
         EmailModule,
         EmailTemplateModule,
         EmailTemplateVariableModule,

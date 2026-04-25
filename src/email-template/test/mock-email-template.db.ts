@@ -1,5 +1,5 @@
+import { SEED_SENDER_EMAIL_ID } from '@/sender-email/test';
 import { nanoid } from 'nanoid';
-import { SEED_SENDER_EMAIL_ID } from '../../sender-email/test';
 
 interface EmailTemplateRecord {
     id: string;

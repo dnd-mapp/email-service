@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:24.14.0 AS base
+FROM --platform=$BUILDPLATFORM node:24.15.0 AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -23,7 +23,7 @@ RUN pnpm gen:prisma && \
     pnpm build
 
 
-FROM node:24.14.0 AS packager
+FROM node:24.15.0 AS packager
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -46,7 +46,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install
 
 
-FROM node:24.14.0-alpine3.23
+FROM node:24.15.0-alpine3.23
 
 ENV NODE_ENV="production"
 
@@ -57,8 +57,8 @@ COPY --from=packager /app .
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 --start-period=15s \
     CMD node /app/healthcheck.mjs
 
-EXPOSE 4350
+EXPOSE 4450
 
-#ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 CMD ["node", "/app/main.js"]

@@ -1,18 +1,17 @@
-import { parseArrayFromString } from '@/shared-utils';
-import { Transform } from 'class-transformer';
-import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import {
-    DEFAULT_CORS_ORIGINS,
     DEFAULT_DB_HOST,
     DEFAULT_DB_PORT,
     DEFAULT_DB_SCHEMA,
     DEFAULT_DB_USER,
     DEFAULT_SERVER_HOST,
-    DEFAULT_SERVER_PORT,
+    IsHost,
     PORT_RANGE_MAX,
     PORT_RANGE_MIN,
-} from '../constants';
-import { IsHost } from './is-host.decorator';
+} from '@dnd-mapp/shared-backend';
+import { fromStringToArray } from '@dnd-mapp/shared-utils';
+import { Transform } from 'class-transformer';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { DEFAULT_CORS_ORIGINS, DEFAULT_SERVER_PORT } from '../constants';
 
 export const EnvironmentVariableNames = {
     SERVER_HOST: 'EMAIL_SERVICE_HOST',
@@ -43,7 +42,7 @@ export class EnvironmentVariablesSchema {
     @IsString({ each: true })
     @ArrayMinSize(1)
     @IsArray()
-    @Transform(({ value }) => parseArrayFromString(DEFAULT_CORS_ORIGINS, value as string))
+    @Transform(({ value }) => fromStringToArray((value as string) ?? null) ?? DEFAULT_CORS_ORIGINS)
     @IsOptional()
     public [EnvironmentVariableNames.CORS_ORIGINS]!: string[];
 

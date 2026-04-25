@@ -1,24 +1,25 @@
+import { AppModule, configureSwagger } from '@/app';
+import { AppConfig, AppConfigurationNamespaces } from '@/common';
 import {
-    AppModule,
     configureCors,
     configureFastifyAdapter,
     configureGlobalValidation,
     configureHelmet,
-    configureSwagger,
-} from '@/app';
-import { AppConfig, ConfigurationNamespaces, ServerConfig } from '@/common';
+    ServerConfig,
+} from '@dnd-mapp/shared-backend';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-    const { adapter, ssl } = await configureFastifyAdapter();
+    const { EMAIL_SERVICE_SSL_CERT_PATH, EMAIL_SERVICE_SSL_KEY_PATH } = process.env;
+    const { adapter, ssl } = await configureFastifyAdapter(EMAIL_SERVICE_SSL_CERT_PATH, EMAIL_SERVICE_SSL_KEY_PATH);
 
     const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter);
 
     const configService = app.get(ConfigService<AppConfig, true>);
-    const { host, port } = configService.get<ServerConfig>(ConfigurationNamespaces.SERVER);
+    const { host, port } = configService.get<ServerConfig>(AppConfigurationNamespaces.SERVER);
 
     await configureHelmet(app);
     await configureSwagger(app);

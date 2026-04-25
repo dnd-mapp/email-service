@@ -1,9 +1,9 @@
-import { DatabaseService } from '@/database';
 import { MockPrisma, createTestModule } from '@/test';
+import { DatabaseService } from '@dnd-mapp/shared-backend';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { EmailTemplateModule } from '../email-template.module';
-import { SEED_EMAIL_TEMPLATE_ID } from '../test';
+import { EmailTemplateModule } from './email-template.module';
 import { EmailTemplateService } from './email-template.service';
+import { SEED_EMAIL_TEMPLATE_ID } from './test';
 
 describe('EmailTemplateService', () => {
     async function setupTest() {

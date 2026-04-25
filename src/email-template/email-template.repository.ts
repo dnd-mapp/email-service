@@ -1,9 +1,8 @@
-import { DatabaseService } from '@/database';
 import { PrismaClient } from '@/prisma/client';
+import { DatabaseService } from '@dnd-mapp/shared-backend';
 import { tryCatch } from '@dnd-mapp/shared-utils';
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
-import { CreateEmailTemplate } from './domain/create-email-template.model';
-import { UpdateEmailTemplate } from './domain/update-email-template.model';
+import { CreateEmailTemplate, UpdateEmailTemplate } from './domain';
 
 @Injectable()
 export class EmailTemplateRepository {
