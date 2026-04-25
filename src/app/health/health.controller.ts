@@ -1,5 +1,5 @@
-import { DatabaseService } from '@/database';
 import { PrismaClient } from '@/prisma/client';
+import { DatabaseService } from '@dnd-mapp/shared-backend';
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, PrismaHealthIndicator } from '@nestjs/terminus';
 

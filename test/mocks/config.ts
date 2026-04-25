@@ -1,10 +1,11 @@
-import { AppConfig, DatabaseConfig, ResendConfig, ServerConfig } from '@/common';
+import { AppConfig, ResendConfig } from '@/common';
+import { DatabaseConfig, ServerConfig } from '@dnd-mapp/shared-backend';
 
 export const defaultMockServerConfig: ServerConfig = {
     host: 'localhost',
-    port: 4350,
+    port: 4450,
     cors: {
-        origins: ['http://localhost:4200'],
+        origins: ['http://localhost:4350'],
     },
     ssl: {},
 };
@@ -12,8 +13,8 @@ export const defaultMockServerConfig: ServerConfig = {
 export const defaultMockDatabaseConfig: DatabaseConfig = {
     host: 'localhost',
     port: 3306,
-    schema: 'dma_auth',
-    user: 'dma',
+    schema: 'email_db',
+    user: 'email_app',
     password: 'password',
 };
 

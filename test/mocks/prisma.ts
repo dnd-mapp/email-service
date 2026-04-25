@@ -1,8 +1,8 @@
-import { PrismaLikeClient } from '@/common';
 import { MockEmailTemplateVariableDB } from '@/email-template-variable/test';
 import { MockEmailTemplateDB } from '@/email-template/test';
 import { MockEmailLogDB } from '@/email/test';
 import { MockSenderEmailDB } from '@/sender-email/test';
+import { PrismaLikeClient } from '@dnd-mapp/shared-backend';
 import { MockPrismaEmailLogDB } from './db/mock-prisma-email-log.db';
 import { MockPrismaEmailTemplateVariableDB } from './db/mock-prisma-email-template-variable.db';
 import { MockPrismaEmailTemplateDB } from './db/mock-prisma-email-template.db';

@@ -1,39 +1,16 @@
-export const ConfigurationNamespaces = {
-    SERVER: 'server',
-    DATABASE: 'database',
+import { ConfigurationNamespaces, DatabaseConfig, ServerConfig } from '@dnd-mapp/shared-backend';
+
+export const AppConfigurationNamespaces = {
+    ...ConfigurationNamespaces,
     RESEND: 'resend',
 } as const;
-
-interface CorsConfig {
-    origins: string[];
-}
-
-export interface SslConfig {
-    cert?: string;
-    key?: string;
-}
-
-export interface ServerConfig {
-    host: string;
-    port: number;
-    cors: CorsConfig;
-    ssl: SslConfig;
-}
-
-export interface DatabaseConfig {
-    host: string;
-    port: number;
-    schema: string;
-    user: string;
-    password: string;
-}
 
 export interface ResendConfig {
     apiKey: string;
 }
 
 export interface AppConfig {
-    [ConfigurationNamespaces.SERVER]: ServerConfig;
-    [ConfigurationNamespaces.DATABASE]: DatabaseConfig;
-    [ConfigurationNamespaces.RESEND]: ResendConfig;
+    [AppConfigurationNamespaces.SERVER]: ServerConfig;
+    [AppConfigurationNamespaces.DATABASE]: DatabaseConfig;
+    [AppConfigurationNamespaces.RESEND]: ResendConfig;
 }
