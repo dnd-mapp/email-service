@@ -1,9 +1,9 @@
+import { EmailTemplateService } from '@/email-template';
+import { SenderEmail } from '@/sender-email/domain';
 import { MockResendService, MockTemplateService } from '@/test';
 import { BadRequestException, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { EmailTemplateService } from '../../email-template/services';
-import { SenderEmail } from '../../sender-email/domain/sender-email.model';
-import { EmailLogStatuses } from '../email-log-statuses.enum';
+import { EmailLogStatuses } from '../domain';
 import { EmailRepository } from '../email.repository';
 import { EmailService } from './email.service';
 import { ResendService } from './resend.service';

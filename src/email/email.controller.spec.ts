@@ -1,10 +1,10 @@
-import { DatabaseModule } from '@/database';
 import { MockConfigService, MockPrisma, MockResendService } from '@/test';
+import { DatabaseModule } from '@dnd-mapp/shared-backend';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { EmailController } from './email.controller';
 import { EmailModule } from './email.module';
-import { ResendService } from './services/resend.service';
+import { ResendService } from './services';
 
 describe('EmailController', () => {
     async function setupTest() {

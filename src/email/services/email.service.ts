@@ -1,7 +1,7 @@
+import { EmailTemplateService } from '@/email-template';
 import { tryCatch } from '@dnd-mapp/shared-utils';
 import { BadRequestException, Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
-import { EmailTemplateService } from '../../email-template/services';
-import { EmailLogStatuses } from '../email-log-statuses.enum';
+import { EmailLogStatuses } from '../domain';
 import { EmailRepository } from '../email.repository';
 import { ResendService } from './resend.service';
 import { TemplateService } from './template.service';

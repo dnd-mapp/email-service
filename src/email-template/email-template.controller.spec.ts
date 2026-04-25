@@ -1,8 +1,8 @@
-import { DatabaseService } from '@/database';
+import { SEED_SENDER_EMAIL_ID } from '@/sender-email/test';
 import { MockPrisma, createTestModule } from '@/test';
+import { DatabaseService } from '@dnd-mapp/shared-backend';
 import { NotFoundException } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
-import { SEED_SENDER_EMAIL_ID } from '../sender-email/test';
 import { CreateEmailTemplateDto, UpdateEmailTemplateDto } from './dtos';
 import { EmailTemplateController } from './email-template.controller';
 import { EmailTemplateModule } from './email-template.module';

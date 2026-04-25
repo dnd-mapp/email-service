@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post
 import { ApiCreatedResponse, ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
 import { type FastifyReply } from 'fastify';
 import { CreateEmailTemplateVariableDto, UpdateEmailTemplateVariableDto } from './dtos';
-import { EmailTemplateVariableService } from './services';
+import { EmailTemplateVariableService } from './email-template-variable.service';
 
 @ApiTags('email-template-variables')
 @Controller('/email-templates/:templateId/variables')

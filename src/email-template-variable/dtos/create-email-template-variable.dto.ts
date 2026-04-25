@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/swagger';
-import { CreateEmailTemplateVariable } from '../domain/create-email-template-variable.model';
+import { CreateEmailTemplateVariable } from '../domain';
 import { EmailTemplateVariableDto } from './email-template-variable.dto';
 
 export class CreateEmailTemplateVariableDto

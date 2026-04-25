@@ -1,7 +1,7 @@
+import { SenderEmail } from '@/sender-email/domain';
 import { MockConfigService } from '@/test';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { SenderEmail } from '../../sender-email/domain/sender-email.model';
 import { ResendService } from './resend.service';
 
 const mockEmailsSend = vi.fn().mockResolvedValue({ data: { id: 'email-1' }, error: null });

@@ -1,5 +1,5 @@
 import { PartialType, PickType } from '@nestjs/swagger';
-import { UpdateSenderEmail } from '../domain/update-sender-email.model';
+import { UpdateSenderEmail } from '../domain';
 import { SenderEmailDto } from './sender-email.dto';
 
 export class UpdateSenderEmailDto

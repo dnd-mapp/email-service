@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/swagger';
-import { CreateSenderEmail } from '../domain/create-sender-email.model';
+import { CreateSenderEmail } from '../domain';
 import { SenderEmailDto } from './sender-email.dto';
 
 export class CreateSenderEmailDto

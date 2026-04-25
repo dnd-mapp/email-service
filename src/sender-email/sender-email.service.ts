@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateSenderEmailDto, SenderEmailDto, UpdateSenderEmailDto } from '../dtos';
-import { SenderEmailRepository } from '../sender-email.repository';
+import { CreateSenderEmailDto, SenderEmailDto, UpdateSenderEmailDto } from './dtos';
+import { SenderEmailRepository } from './sender-email.repository';
 
 @Injectable()
 export class SenderEmailService {

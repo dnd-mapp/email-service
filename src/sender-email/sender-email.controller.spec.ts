@@ -1,5 +1,5 @@
-import { DatabaseService } from '@/database';
 import { MockPrisma, createTestModule } from '@/test';
+import { DatabaseService } from '@dnd-mapp/shared-backend';
 import { NotFoundException } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 import { CreateSenderEmailDto, UpdateSenderEmailDto } from './dtos';

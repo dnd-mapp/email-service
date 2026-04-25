@@ -1,10 +1,10 @@
-import { DatabaseService } from '@/database';
+import { SEED_EMAIL_TEMPLATE_ID } from '@/email-template/test';
 import { MockPrisma, createTestModule } from '@/test';
+import { DatabaseService } from '@dnd-mapp/shared-backend';
 import { ConflictException, NotFoundException } from '@nestjs/common';
-import { SEED_EMAIL_TEMPLATE_ID } from '../../email-template/test';
-import { EmailTemplateVariableModule } from '../email-template-variable.module';
-import { SEED_EMAIL_TEMPLATE_VARIABLE_ID } from '../test';
+import { EmailTemplateVariableModule } from './email-template-variable.module';
 import { EmailTemplateVariableService } from './email-template-variable.service';
+import { SEED_EMAIL_TEMPLATE_VARIABLE_ID } from './test';
 
 describe('EmailTemplateVariableService', () => {
     async function setupTest() {

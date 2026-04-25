@@ -1,8 +1,8 @@
+import { EmailTemplateVariableDto } from '@/email-template-variable';
+import { SenderEmailDto } from '@/sender-email';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { EmailTemplateVariableDto } from '../../email-template-variable/dtos';
-import { SenderEmailDto } from '../../sender-email/dtos';
-import { EmailTemplate } from '../domain/email-template.model';
+import { EmailTemplate } from '../domain';
 
 export class EmailTemplateDto implements EmailTemplate {
     public static from(data: EmailTemplate) {
