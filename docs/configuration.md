@@ -38,18 +38,18 @@ For local development, generate a self-signed cert with `mkcert localhost.email.
 
 The service uses MySQL accessed through Prisma. Two database users are configured: one for the application and one for Prisma migrations.
 
-| Variable                          | Required | Type     | Default     | Description                                                         |
-|-----------------------------------|----------|----------|-------------|---------------------------------------------------------------------|
-| `EMAIL_SERVICE_DB_HOST`           | No       | `string` | `localhost` | Database server hostname (used as application host reference)       |
-| `EMAIL_SERVICE_DB_PORT`           | No       | `number` | `3306`      | Database server port                                                |
-| `EMAIL_SERVICE_DB_USER`           | No       | `string` | `root`      | Application database user                                           |
-| `EMAIL_SERVICE_DB_PASSWORD`       | Yes      | `string` | —           | Application database user password                                  |
-| `EMAIL_SERVICE_DB_PASSWORD_FILE`  | No       | `string` | —           | Path to a file containing the DB password (Docker secrets)          |
-| `EMAIL_SERVICE_DB_SCHEMA`         | No       | `string` | `my_db`     | Database schema / catalog name                                      |
-| `PRISMA_DB_HOST`                  | Yes      | `string` | —           | Host used in the Prisma connection string; typically set to `$EMAIL_SERVICE_DB_HOST` |
-| `PRISMA_DB_USER`                  | Yes      | `string` | —           | Prisma migration user (requires DDL privileges)                     |
-| `PRISMA_DB_PASSWORD`              | Yes      | `string` | —           | Prisma migration user password                                      |
-| `PRISMA_DB_PASSWORD_FILE`         | No       | `string` | —           | Path to a file containing the Prisma DB password (Docker secrets)   |
+| Variable                         | Required | Type     | Default     | Description                                                                          |
+|----------------------------------|----------|----------|-------------|--------------------------------------------------------------------------------------|
+| `EMAIL_SERVICE_DB_HOST`          | No       | `string` | `localhost` | Database server hostname (used as application host reference)                        |
+| `EMAIL_SERVICE_DB_PORT`          | No       | `number` | `3306`      | Database server port                                                                 |
+| `EMAIL_SERVICE_DB_USER`          | No       | `string` | `root`      | Application database user                                                            |
+| `EMAIL_SERVICE_DB_PASSWORD`      | Yes      | `string` | —           | Application database user password                                                   |
+| `EMAIL_SERVICE_DB_PASSWORD_FILE` | No       | `string` | —           | Path to a file containing the DB password (Docker secrets)                           |
+| `EMAIL_SERVICE_DB_SCHEMA`        | No       | `string` | `my_db`     | Database schema / catalog name                                                       |
+| `PRISMA_DB_HOST`                 | Yes      | `string` | —           | Host used in the Prisma connection string; typically set to `$EMAIL_SERVICE_DB_HOST` |
+| `PRISMA_DB_USER`                 | Yes      | `string` | —           | Prisma migration user (requires DDL privileges)                                      |
+| `PRISMA_DB_PASSWORD`             | Yes      | `string` | —           | Prisma migration user password                                                       |
+| `PRISMA_DB_PASSWORD_FILE`        | No       | `string` | —           | Path to a file containing the Prisma DB password (Docker secrets)                    |
 
 > [!NOTE]
 > `EMAIL_SERVICE_DB_PASSWORD_FILE` and `PRISMA_DB_PASSWORD_FILE` follow the Docker secrets `_FILE` convention. When set, the entrypoint reads the file and exports the secret as the corresponding base variable. Set only one of the pair — the base variable takes precedence if both are present.
