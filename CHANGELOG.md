@@ -8,27 +8,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- (n/a)
+- Add `@dnd-mapp/shared-backend` dependency providing shared NestJS infrastructure (database module, Prisma type helpers, health module, bootstrap utilities, throttler/CORS/Helmet/serialization config, `IsHost` validator, and env validation helper).
+- Add Docker secrets support in the entrypoint: secrets can now be provided as files via the `_FILE` suffix convention (e.g. `PRISMA_DB_PASSWORD_FILE`).
+- Add `PRISMA_DB_HOST` environment variable; used in the Prisma connection string so the Prisma migration user can target a different host than the application user if needed.
+- Add `serve` and `migrate` command modes to the Docker entrypoint for more flexible container orchestration.
+- Add `domain/index.ts` and top-level `index.ts` barrel exports to each feature module.
 
 ### Changed
 
-- (n/a)
-
-### Deprecated
-
-- (n/a)
+- `EMAIL_SERVICE_DB_URL` now interpolates `PRISMA_DB_HOST` instead of `EMAIL_SERVICE_DB_HOST`, allowing the Prisma connection to target a separate host when required.
+- Service files moved from `services/` subdirectory to feature module root (e.g. `email-template/email-template.service.ts`).
+- Domain type files consolidated under a `domain/` subdirectory within each feature module.
+- Bump Node.js runtime from 24.14.0 to 24.15.0.
+- Fix Docker `EXPOSE` port from 4350 to 4450 and enable the `ENTRYPOINT` instruction.
+- Update healthcheck URL port to 4450.
 
 ### Removed
 
-- (n/a)
-
-### Fixed
-
-- (n/a)
-
-### Security
-
-- (n/a)
+- Remove locally-defined database module, Prisma type helpers (`PrismaLikeClient`, tokens), health module, CORS/Helmet/Fastify-adapter/class-transform/serialization/throttler config helpers, `IsHost` decorator, and `validateEnvironmentVariables` function — all now provided by `@dnd-mapp/shared-backend`.
+- Remove local shared utility functions for arrays, integer parsing, and time conversion — now provided by `@dnd-mapp/shared-utils`.
 
 ---
 
