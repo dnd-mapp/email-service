@@ -19,7 +19,7 @@ docker run -d \
   --name email-service \
   -p 4450:4450 \
   -e NODE_ENV=production \
-  -e DB_URL="mysql://user:password@host:3306/email_db" \
+  -e EMAIL_SERVICE_DB_URL="mysql://user:password@host:3306/email_db" \
   -e EMAIL_SERVICE_SMTP_HOST="smtp.gmail.com" \
   -e EMAIL_SERVICE_SMTP_USER="your-account@gmail.com" \
   -e EMAIL_SERVICE_SMTP_PASSWORD="your-app-password" \
